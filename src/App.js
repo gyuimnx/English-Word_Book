@@ -1,11 +1,9 @@
 import './App.css';
 
+import WordBookApp from './wordBook/App';
+
 function App() {
-  return (
-    <div className="App">
-      app
-    </div>
-  );
+  return <WordBookApp />;
 }
 
 export default App;

@@ -1,9 +1,8 @@
 import React from "react";
-import Chapter from "./Chapter";
+import Chapter from "./Chapter/Chapter";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Word from "./Word";
-import Quiz from "./Quiz";
-// import Word from "./Word";
+import Word from "./Word/Word";
+import Quiz from "./Quiz/Quiz";
 
 function App() {
     return (

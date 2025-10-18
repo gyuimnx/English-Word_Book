@@ -1,0 +1,252 @@
+/* Word.css */
+.Wodr_container {
+    margin: 0;
+    display: flex;
+}
+
+.Word {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+
+    justify-items: center;
+    align-items: center;
+}
+
+.WordHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 3px solid #facc00;
+
+    width: 800px;
+}
+
+.WordHeader h1 {
+    color: #333;
+    margin: 0;
+}
+
+.AddWordBtn {
+    background-color: #FFE44D;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 17px;
+    transition: background-color 0.3s;
+}
+
+.AddWordBtn:hover {
+    background-color: #FFD700;
+}
+
+/* 모달 스타일 */
+.WordModalOverlay {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    width: 300px;
+    height: 200px;
+    background-color: white;
+
+    border: 3px solid black;
+    border-radius: 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 1000;
+}
+
+.WordModal {
+    display: flex;
+    flex-direction: column;
+    
+    /* position: absolute; */
+    /* top: 50%;
+    left: 50%; */
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+    border: 2px solid lightgray;
+    z-index: 1000;
+}
+
+.WordModal h2 {
+    margin: 0 0 20px 0;
+    color: #333;
+    text-align: center;
+}
+
+.WordBar, .MeanBar {
+    padding: 5px;
+    border: 0.5px solid rgba(0, 0, 0, 0.342);
+    border-radius: 7px;
+    margin-left: 8px;
+}
+
+.WordBar:focus, .MeanBar:focus {
+    outline: none;
+    border: 1.5px solid #ffbb00;
+}
+
+.FormButtons {
+    display: flex;
+    justify-content: right;
+    gap: 10px;
+    margin-top: 10px;
+
+    margin-right: 10px;
+}
+
+.SubmitBtn, .CancelBtn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.SubmitBtn {
+    background-color: #fae100;
+}
+
+.SubmitBtn:hover {
+    background-color: #ffc400;
+}
+
+.CancelBtn {
+    background-color: #f5f5f5;
+}
+
+.CancelBtn:hover {
+    background-color: #e0e0e0;
+}
+
+/* 단어 목록 스타일 */
+.WordList {
+    margin-top: 20px;
+}
+
+.EmptyMessage {
+    text-align: center;
+    color: #666;
+    padding: 30px;
+    background-color: #d6d6d6;
+    border-radius: 5px;
+
+    width: 700px;
+}
+
+.WordItems {
+    display: grid;
+    gap: 15px;
+}
+
+.WordItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: white;
+    border: 2px solid #facc00;
+    border-radius: 8px;
+    transition: transform 0.2s;
+    width: 600px;
+}
+
+
+/*올리면 쪼끔 움직임*/
+/* .WordItem:hover {
+    transform: translateY(-2px);
+} */
+
+.WordContent {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.WordText {
+    font-weight: bold;
+    color: #333;
+    min-width: 120px;
+}
+
+.WordMeaning {
+    color: #666;
+}
+
+.DeleteWordBtn {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    font-weight: bold;
+}
+
+.DeleteWordBtn:hover {
+    background-color: #db3b30;
+}
+
+.CorrWordBtn {
+    margin-right: 20px;
+    background-color: #4caf4f;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    font-weight: bold;
+}
+
+.CorrWordBtn:hover {
+    background-color: #3d8b40;
+}
+
+.BackBtn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 30px;
+    border: none;
+    background-color: transparent;
+    padding: 10px;
+
+    cursor: pointer;
+}
+
+.BackBtn:hover {
+    background-color: rgb(236, 236, 236);
+}
+
+.BackImg {
+    width: 30px;
+    height: 25px;
+}
