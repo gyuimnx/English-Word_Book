@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 // 기본 라우트 정의
 // ----------------------------------------------------
 app.get('/', (req, res) => {
-    res.send('English Wordbook Server is running!');
+    res.send('서버 실행중');
 });
 
 // ----------------------------------------------------
