@@ -5,6 +5,9 @@ const express = require('express');
 const cors = require('cors');
 const db = require('./config/db'); // 2. DB 연결 모듈 불러오기
 
+const authRoutes = require('./routes/auth');        // ✨ 인증 라우터 불러오기
+const wordbookRoutes = require('./routes/wordbook'); // ✨ 단어장 라우터 불러오기
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -25,11 +28,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ----------------------------------------------------
-// 기본 라우트 정의
+// 라우트 정의 (수정)
 // ----------------------------------------------------
+
+// 기본 라우트
 app.get('/', (req, res) => {
-    res.send('서버 실행중');
+    res.send('English Wordbook Server is running!');
 });
+
+// ✨ 인증 라우터 연결 (로그인/회원가입)
+app.use('/api/auth', authRoutes); 
+
+// ✨ 단어장 라우터 연결 (JWT 토큰 필요)
+app.use('/api/wordbook', wordbookRoutes);
 
 // ----------------------------------------------------
 // 서버 시작 및 DB 연결 테스트
@@ -49,3 +60,5 @@ db.getConnection()
         console.log('DB 연결 오류로 서버 시작 실패');
         process.exit(1); // 연결 실패 시 서버 종료
     });
+
+// npm run dev : 서버를 개발 모드로 실행 (nodemon 사용)
