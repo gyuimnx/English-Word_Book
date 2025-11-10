@@ -1,16 +1,12 @@
-// server/routes/wordbook.js
-
 const express = require('express');
 const router = express.Router();
-const db = require('../config/db');
-const protect = require('../middleware/auth'); // ✨ JWT 인증 미들웨어
+const db = require('./db');
+const protect = require('./middleware_auth'); // JWT 인증 미들웨어
 
 // 이 라우터의 모든 경로에 JWT 인증 미들웨어를 적용합니다.
 router.use(protect); 
 
-// ----------------------------------------------------
-// [1] 챕터 목록 조회 (GET /api/wordbook/chapters)
-// ----------------------------------------------------
+// 챕터 목록 조회(GET /api/wordbook/chapters)
 router.get('/chapters', async (req, res) => {
     // req.user_id: 미들웨어에서 추출된 현재 로그인 사용자의 ID
     const user_id = req.user_id; 
@@ -25,9 +21,7 @@ router.get('/chapters', async (req, res) => {
     }
 });
 
-// ----------------------------------------------------
-// [2] 새 챕터 추가 (POST /api/wordbook/chapters)
-// ----------------------------------------------------
+// 새 챕터 추가(POST /api/wordbook/chapters)
 router.post('/chapters', async (req, res) => {
     const user_id = req.user_id;
     const { name } = req.body;
@@ -55,24 +49,22 @@ router.post('/chapters', async (req, res) => {
     }
 });
 
-// ----------------------------------------------------
-// [3] 특정 챕터의 단어 목록 조회 (GET /api/wordbook/words/:chapterId)
-// ----------------------------------------------------
+// 특정 챕터의 단어 목록 조회 (GET /api/wordbook/words/:chapterId)
 router.get('/words/:chapterId', async (req, res) => {
     const user_id = req.user_id;
     const { chapterId } = req.params;
 
     try {
-        // 1. 보안 검사: 요청된 챕터가 이 사용자의 소유인지 확인 (필수)
+        // 보안 검사: 요청된 챕터가 이 사용자의 소유인지 확인
         const [chapterCheck] = await db.query('SELECT chapter_id FROM Chapters WHERE chapter_id = ? AND user_id = ?', [chapterId, user_id]);
         
         if (chapterCheck.length === 0) {
             return res.status(404).json({ message: '해당 챕터를 찾을 수 없거나 접근 권한이 없습니다.' });
         }
 
-        // 2. 단어 목록 조회
+        // 단어 목록 조회
         const [words] = await db.query(
-            'SELECT word_id, english_word, korean_meaning, is_memorized FROM Words WHERE chapter_id = ? ORDER BY word_id ASC', 
+            'SELECT word_id, english, korean, is_memorized FROM Words WHERE chapter_id = ? ORDER BY word_id ASC', 
             [chapterId]
         );
         res.json({ words });
@@ -83,14 +75,12 @@ router.get('/words/:chapterId', async (req, res) => {
 });
 
 
-// ----------------------------------------------------
-// [4] 단어 추가 (POST /api/wordbook/words)
-// ----------------------------------------------------
+// 단어 추가(POST /api/wordbook/words)
 router.post('/words', async (req, res) => {
     const user_id = req.user_id;
-    const { chapter_id, english_word, korean_meaning } = req.body;
+    const { chapter_id, english, korean } = req.body;
 
-    if (!chapter_id || !english_word || !korean_meaning) {
+    if (!chapter_id || !english || !korean) {
         return res.status(400).json({ message: '필수 필드를 모두 입력해주세요.' });
     }
 
@@ -103,8 +93,8 @@ router.post('/words', async (req, res) => {
         }
 
         // 단어 DB에 추가
-        const sql = 'INSERT INTO Words (chapter_id, english_word, korean_meaning) VALUES (?, ?, ?)';
-        const [result] = await db.query(sql, [chapter_id, english_word, korean_meaning]);
+        const sql = 'INSERT INTO Words (chapter_id, english, korean) VALUES (?, ?, ?)';
+        const [result] = await db.query(sql, [chapter_id, english, korean]);
 
         res.status(201).json({ 
             message: '단어가 성공적으로 추가되었습니다.', 
@@ -117,9 +107,7 @@ router.post('/words', async (req, res) => {
 });
 
 
-// ----------------------------------------------------
-// [5] 단어 암기 상태 토글 (PUT /api/wordbook/words/:wordId/toggle)
-// ----------------------------------------------------
+// 단어 암기 상태 토글 (PUT /api/wordbook/words/:wordId/toggle)
 router.put('/words/:wordId/toggle', async (req, res) => {
     const user_id = req.user_id;
     const { wordId } = req.params;
@@ -153,9 +141,7 @@ router.put('/words/:wordId/toggle', async (req, res) => {
 });
 
 
-// ----------------------------------------------------
-// [6] 단어 삭제 (DELETE /api/wordbook/words/:wordId)
-// ----------------------------------------------------
+// 단어 삭제 (DELETE /api/wordbook/words/:wordId)
 router.delete('/words/:wordId', async (req, res) => {
     const user_id = req.user_id;
     const { wordId } = req.params;

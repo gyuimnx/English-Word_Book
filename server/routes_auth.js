@@ -2,25 +2,22 @@
 
 const express = require('express');
 const router = express.Router();
-const db = require('../config/db');
-const bcrypt = require('bcryptjs'); 
-const jwt = require('jsonwebtoken'); 
-const moment = require('moment'); 
+const db = require('./db');
+const bcrypt = require('bcryptjs'); // 비밀번호 해싱
+const jwt = require('jsonwebtoken'); // JWT 토큰 생성
+const moment = require('moment'); // 시간 처리
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const MAX_LOGIN_ATTEMPTS = 5;
 
-// ✨ 수정: 잠금 시간을 60초로 설정합니다.
+// 잠금 시간 60초로 설정
 const LOCK_TIME_UNIT = 'seconds'; 
 const LOCK_TIME_VALUE = 60; 
 
 // 메시지에 표시할 단위
 const LOCK_UNIT_DISPLAY = LOCK_TIME_UNIT === 'minutes' ? '분' : '초';
 
-
-// ----------------------------------------------------
-// [1] 회원가입 (POST /api/auth/register)
-// ----------------------------------------------------
+// 회원가입
 router.post('/register', async (req, res) => {
     const { username, password } = req.body;
     if (!username || !password) {
@@ -49,9 +46,7 @@ router.post('/register', async (req, res) => {
 });
 
 
-// ----------------------------------------------------
-// [2] 로그인 (POST /api/auth/login)
-// ----------------------------------------------------
+// 로그인
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
     if (!username || !password) {
@@ -102,7 +97,7 @@ router.post('/login', async (req, res) => {
             let message = '아이디 또는 비밀번호가 올바르지 않습니다.';
             
             if (newAttempts >= MAX_LOGIN_ATTEMPTS) {
-                // ✨ 수정된 잠금 시간 변수를 사용하여 잠금 시간 설정
+                // 수정된 잠금 시간 변수를 사용하여 잠금 시간 설정
                 lockUntil = moment().add(LOCK_TIME_VALUE, LOCK_TIME_UNIT).format('YYYY-MM-DD HH:mm:ss');
                 newAttempts = MAX_LOGIN_ATTEMPTS; 
                 

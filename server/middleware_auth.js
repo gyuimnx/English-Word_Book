@@ -27,3 +27,7 @@ const protect = (req, res, next) => {
 };
 
 module.exports = protect;
+
+
+
+//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNzYyNzYwMTk1LCJleHAiOjE3NjI4NDY1OTV9.r-cNdu52f0Q9j31B7smL2ldGKeF3B_kl_lHUTr0sCDE
