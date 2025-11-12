@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import './Chapter.css';
 import ListChapter from "../ListChapter/ListChapter";
 import { Link } from "react-router-dom";
+import api from "../api";
 
 function Chapter() {
     const [chapters, setChapters] = useState([]); // 챕터 목록
     const [newChapter, setNewChapter] = useState(''); // 새 챕터
-    const [createOpen, setCreateOpen] = useState(false); // 새 챕터 만들기 눌렀는가
+    const [createOpen, setCreateOpen] = useState(false); // 새 챕터 만들기 눌렀는가?
 
     // 새 챕터 만들기 함수
     function handleCreateChapter(e) {
