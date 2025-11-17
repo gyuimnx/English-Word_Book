@@ -32,22 +32,33 @@ function ListChapter({ chapters, DeleteChapter }) {
             ) : (
                 <div className='ChapterContainer'>
                     {chapters.map((chapter, index) => (
-                        <Link key={chapter.chapter_id} className='ChapterItem' to={`/Word/${encodeURIComponent(chapter.name)}`} state={{chapterId: chapter.chapter_id}}>
-                            {/* 단어 페이지로 이동 시, DB ID를 state로 전달 */}
+                        <Link key={chapter.chapter_id} className='ChapterItem' to={`/Word/${encodeURIComponent(chapter.name)}`} state={{ chapterId: chapter.chapter_id }}>
+                            {/* e.preventDefault(); e.stopPropagation(); 제거 후, 
+                                  버튼 onClick에서만 이벤트 중단 로직 추가 */}
                             {chapter.name}
-                            <div className='Btns' onClick={(e)=>{e.preventDefault(); e.stopPropagation();}}>
-                                <button className='CorrBtn' onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    handleCorrChapter(e, index, chapter.name)
-                                }}>수정</button>
-                                <button className='DeleteBtn' onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    if(window.confirm(`챕터${chapter.name}를 삭제하시겠습니까?`)){
-                                        DeleteChapter(chapter.chapter_id);
-                                    }
-                                }}>삭제</button>
+                            <div className='Btns' onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}>
+                                <button
+                                    className='CorrBtn'
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        handleCorrChapter(e, chapter.chapter_id, chapter.name)
+                                    }}
+                                >
+                                    수정
+                                </button>
+                                <button
+                                    className='DeleteBtn'
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        if (window.confirm(`챕터${chapter.name}를 삭제하시겠습니까?`)) {
+                                            DeleteChapter(chapter.chapter_id);
+                                        }
+                                    }}
+                                >
+                                    삭제
+                                </button>
                             </div>
                         </Link>
                     ))}
