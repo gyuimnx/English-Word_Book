@@ -7,7 +7,7 @@ function Word() {
     const { chapterName } = useParams();
     const location = useLocation();
 
-    const chapterId = location.state?.chpaterId;
+    const chapterId = location.state?.chapterId;
 
     const navigate = useNavigate();
     const [words, setWords] = useState([]);
@@ -18,7 +18,6 @@ function Word() {
 
     const fetchWords = async () => {
         if (!chapterId) {
-            console.error("Chapter Id is missing");
             setLoading(false);
             navigate('/Chapter'); // ID가 없으면 챕터 목록으로 돌려보내기
             return;
@@ -37,37 +36,9 @@ function Word() {
         }
     };
 
-    // useEffect(() => {
-    //     const chapterName = decodeURIComponent(location.pathname.split('/').pop());
-    //     const chapters = JSON.parse(localStorage.getItem('chapters')) || [];
-    //     const currentChapter = chapters.find(ch => ch.name === chapterName);
-
-    //     if (currentChapter) {
-    //         setWords(currentChapter);
-    //     } else {
-    //         navigate('/Chapter');
-    //     }
-    // }, [location, navigate]);
-
     useEffect(() => { // chapterID가 변경될 때 실행
         fetchWords();
     }, [chapterId]);
-
-    // const handleAddWord = (e) => {
-    //     e.preventDefault();
-    //     if (newWord.word.trim() && newWord.meaning.trim()) {
-    //         const updatedChapters = JSON.parse(localStorage.getItem('chapters') || '[]').map(ch =>
-    //             ch.name === words.name
-    //                 ? { ...ch, words: [...ch.words, newWord] }
-    //                 : ch
-    //         );
-
-    //         localStorage.setItem('chapters', JSON.stringify(updatedChapters));
-    //         setWords(updatedChapters.find(ch => ch.name === words.name));
-    //         setNewWord({ word: '', meaning: '' });
-    //         setIsAddingWord(false);
-    //     }
-    // };
 
     // 단어 추가
     const handleAddWord = async (e) => {
@@ -95,18 +66,6 @@ function Word() {
         }
     };
 
-
-    //단어 삭제
-    // const handleDeleteWord = (index) => {
-    //     const updatedChapters = JSON.parse(localStorage.getItem('chapters') || '[]').map(ch =>
-    //         ch.name === words.name
-    //             ? { ...ch, words: ch.words.filter((_, i) => i !== index) }
-    //             : ch
-    //     );
-
-    //     localStorage.setItem('chapters', JSON.stringify(updatedChapters));
-    //     setWords(updatedChapters.find(ch => ch.name === words.name));
-    // };
     const handleDeleteWord = async (wordId) => {
         if (!window.confirm('단어를 삭제하시겠습니까?')) {
             return;
@@ -114,7 +73,7 @@ function Word() {
 
         try {
             await api.delete(`/words/${wordId}`);
-            setWords(prev => prev.filter(word => word.id !== wordId));
+            setWords(prev => prev.filter(word => word.word_id !== wordId));
             alert('단어가 삭제되었습니다.');
         } catch (error) {
             console.error('단어 삭제 실패:', error);
@@ -122,22 +81,6 @@ function Word() {
         }
     }
 
-    //단어 수정 함수
-    // const handleCorrWord = (word, newMean) => {
-    //     const updatedChapters = JSON.parse(localStorage.getItem('chapters') || '[]').map(ch =>
-    //         ch.name === words.name
-    //             ? {
-    //                 ...ch,
-    //                 words: ch.words.map(w =>
-    //                     w.word === word ? { ...w, meaning: newMean } : w
-    //                 )
-    //             }
-    //             : ch
-    //     );
-
-    //     localStorage.setItem('chapters', JSON.stringify(updatedChapters));
-    //     setWords(updatedChapters.find(ch => ch.name === words.name));
-    // };
     const handleCorrWord = async (wordId, currentMean) => {
         alert("구현중")
     }
@@ -196,11 +139,11 @@ function Word() {
                 )}
 
                 <div className="WordList">
-                    {words.words.length === 0 ? (
+                    {words.length === 0 ? (
                         <h2 className="EmptyMessage">등록된 단어가 없습니다.</h2>
                     ) : (
                         <div className="WordItems">
-                            {words.words.map((word, index) => (
+                            {words.map((word) => (
                                 <div key={word.word_id} className="WordItem">
                                     <div className="WordContent">
                                         <span className="WordText">{word.english}</span>
@@ -210,8 +153,6 @@ function Word() {
                                         <button
                                             className="CorrWordBtn"
                                             onClick={() => {
-                                                // const newMean = prompt("뜻 수정", word.meaning);
-                                                // if (newMean) handleCorrWord(word.word, newMean);
                                                 handleCorrWord(word.word_id, word.korean);
                                             }}
                                         >

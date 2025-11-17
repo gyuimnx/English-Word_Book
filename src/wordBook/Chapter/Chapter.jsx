@@ -39,49 +39,18 @@ function Chapter() {
                 setCreateOpen(false);
                 alert('챕터 생성 성공');
             } catch (error) {
-                alert('챕터 생성 실패');
+                const message = error.response?.data?.message || '챕터 생성 실패';
+                alert(message);
             }
         };
     };
-
-
-    // 로컬스토리지 삭제----------------------------------------------------------
-    // // 새 챕터 만들기 함수
-    // function handleCreateChapter(e) {
-    //     e.preventDefault();
-    //     if (newChapter.trim()) {
-    //         const newChapterObj = { name: newChapter, words: [] };
-    //         const updatedChapters = [...chapters, newChapterObj];
-    //         setChapters(updatedChapters);
-    //         localStorage.setItem('chapters', JSON.stringify(updatedChapters));
-    //         setNewChapter('');
-    //         setCreateOpen(false);
-    //     };
-    // };
-
-    // 로컬스토리지 삭제----------------------------------------------------------
-    // // 챕터 목록 불러오기
-    // useEffect(() => {
-    //     const storedChapters = JSON.parse(localStorage.getItem('chapters')) || [];
-    //     setChapters(storedChapters);
-    // }, []);
-
-    // // 챕터 삭제 함수
-    // function DeleteChapter(index) {
-    //     const updatedChapters = chapters.filter((_, i) => i !== index); //filter로 삭제할 챕터를 제외한 새 배열 생성
-    //     setChapters(updatedChapters); // state 업데이트
-    //     localStorage.setItem('chapters', JSON.stringify(updatedChapters)); // 로컬스토리지 업데이트
-    // }
 
     // 챕터 삭제(DB에서 삭제)
     async function DeleteChapter(chapterId) {
         if (!window.confirm('해당 챕터의 모든 단어가 삭제됩니다. 정말 삭제하시겠습니까?'))
             return;
-
-
         try {
             await api.delete(`/chapters/${chapterId}`);
-
             // 삭제 성공하면 목록에서 챕터 삭제(DB ID 기반 필터링)
             setChapters(prev => prev.filter(ch => ch.chapter_id !== chapterId));
             alert("챕터 삭제 성공");
@@ -94,7 +63,6 @@ function Chapter() {
         localStorage.removeItem('userToken'); // 토큰 제거하고
         localStorage.removeItem('username');
         navigate('/Login'); // 로그인 페이지로 이동
-
     };
 
     return (
