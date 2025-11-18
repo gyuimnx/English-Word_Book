@@ -83,11 +83,18 @@ function Quiz() {
             return;
         }
 
-        let initialQuizWords = wordsToQuiz;
+        const unmemorizedWords = wordsToQuiz.filter(word => !word.is_memorized);
+
+        if (unmemorizedWords.length === 0) {
+            alert('선택된 챕터의 모든 단어를 이미 암기했습니다!');
+            return;
+        }
+
+        let initialQuizWords = unmemorizedWords;
         
         // 단어를 무작위로 섞습니다 (random mode)
         if (quizMode === 'random') {
-            initialQuizWords = [...wordsToQuiz].sort(() => Math.random() - 0.5); 
+            initialQuizWords = [...unmemorizedWords].sort(() => Math.random() - 0.5); 
         }
 
         setWordsInChapter(initialQuizWords); // 퀴즈 단어 목록 설정
