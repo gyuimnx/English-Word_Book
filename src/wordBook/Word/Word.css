@@ -178,11 +178,6 @@
     transform: translateY(-2px);
 } */
 
-.WordContent {
-    display: flex;
-    gap: 20px;
-    align-items: center;
-}
 
 .WordText {
     font-weight: bold;
@@ -192,6 +187,8 @@
 
 .WordMeaning {
     color: #666;
+    flex-grow: 1;
+    text-align: left;
 }
 
 .DeleteWordBtn {
@@ -249,4 +246,39 @@
 .BackImg {
     width: 30px;
     height: 25px;
+}
+
+.checkWord {
+    gap: 30px;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    width: 45%;
+}
+
+
+
+
+
+/* src/wordBook/Word/Word.css (스타일 정리) */
+
+/* 암기 완료된 단어 전체 스타일 - 유지 */
+.WordItem.memorized {
+    background-color: #fff4c3;
+    /* border: 1px solid #28a745;
+    border-left: 3px solid #28a745; */
+}
+
+/* .ToggleBtn, .ToggleBtn.unmemorized, .ToggleBtn.memorized 
+관련 스타일은 모두 제거합니다.
+*/
+/* ✨ [추가] 체크박스 악센트 색상 정의 */
+.ToggleCheckbox {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    cursor: pointer;
+    
+    /* ✨ [핵심 수정] 체크박스 배경색을 프로젝트 테마 색상으로 지정 */
+    accent-color: #ffffff; 
 }

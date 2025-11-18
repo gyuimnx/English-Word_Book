@@ -78,6 +78,27 @@ function Word() {
         }
     }
 
+    // ✨ [추가] 단어 암기 상태 토글 함수 (핵심 기능)
+    // ----------------------------------------------------
+    const handleToggleMemorized = async (wordId) => {
+        try {
+            // PUT /api/wordbook/words/:wordId/toggle 요청
+            const response = await api.put(`/words/${wordId}/toggle`);
+
+            // UI 상태 즉시 업데이트 (DB 통신 결과를 반영)
+            setWords(prevWords => prevWords.map(word =>
+                word.word_id === wordId
+                    ? { ...word, is_memorized: response.data.is_memorized }
+                    : word
+            ));
+
+            // alert(response.data.message);
+        } catch (error) {
+            console.error('암기 상태 토글 실패:', error);
+            alert('암기 상태 변경에 실패했습니다.');
+        }
+    };
+
     // 단어 수정
     const handleCorrWord = async (wordId, currentMean) => {
         alert("구현중")
@@ -142,11 +163,17 @@ function Word() {
                     ) : (
                         <div className="WordItems">
                             {words.map((word) => (
-                                <div key={word.word_id} className="WordItem">
-                                    <div className="WordContent">
+                                <div key={word.word_id} className={`WordItem ${word.is_memorized ? 'memorized' : ''}`}>
+                                    <div className="checkWord">
+                                        <input
+                                            type="checkbox"
+                                            className="ToggleCheckbox"
+                                            checked={word.is_memorized}
+                                            onChange={() => handleToggleMemorized(word.word_id)}
+                                        />
                                         <span className="WordText">{word.english}</span>
-                                        <span className="WordMeaning">{word.korean}</span>
                                     </div>
+                                    <span className="WordMeaning">{word.korean}</span>
                                     <div className="WordBtns">
                                         <button
                                             className="CorrWordBtn"
