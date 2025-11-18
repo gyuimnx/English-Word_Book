@@ -169,4 +169,38 @@ router.delete('/words/:wordId', async (req, res) => {
 });
 
 
+// 챕터 삭제 (DELETE /api/wordbook/chapters/:chapterId)
+router.delete('/chapters/:chapterId', async (req, res) => {
+    const user_id = req.user_id;
+    const { chapterId } = req.params;
+
+    try {
+        // 1. 보안 검사: 요청된 챕터가 이 사용자의 소유인지 확인
+        const [check] = await db.query(
+            'SELECT user_id FROM Chapters WHERE chapter_id = ?',
+            [chapterId]
+        );
+
+        if (check.length === 0) {
+            return res.status(404).json({ message: '해당 챕터를 찾을 수 없습니다.' });
+        }
+        if (check[0].user_id !== user_id) {
+            return res.status(403).json({ message: '챕터를 삭제할 권한이 없습니다.' });
+        }
+
+        // 2. 챕터 삭제 실행 (Words 테이블은 ON DELETE CASCADE 설정으로 단어들이 자동 삭제됩니다.)
+        const sql = 'DELETE FROM Chapters WHERE chapter_id = ?';
+        const [result] = await db.query(sql, [chapterId]);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: '챕터를 찾을 수 없습니다.' });
+        }
+
+        res.status(200).json({ message: '챕터가 성공적으로 삭제되었습니다.' });
+    } catch (error) {
+        console.error('챕터 삭제 에러:', error);
+        res.status(500).json({ message: '서버 오류가 발생했습니다.' });
+    }
+});
+
 module.exports = router;

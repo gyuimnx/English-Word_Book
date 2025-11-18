@@ -59,18 +59,15 @@ function Word() {
             fetchWords(); //성공 후 목록을 갱신하기 위해 다시 조회
             setNewWord({ english: '', korean: '' });
             setIsAddingWord(false);
-            alert(response.date.message);
+            alert(response.data.message);
         } catch (error) {
             const message = error.response?.data?.message || '단어 추가 실패';
             alert(message);
         }
     };
 
+    // 단어 삭제
     const handleDeleteWord = async (wordId) => {
-        if (!window.confirm('단어를 삭제하시겠습니까?')) {
-            return;
-        }
-
         try {
             await api.delete(`/words/${wordId}`);
             setWords(prev => prev.filter(word => word.word_id !== wordId));
@@ -81,6 +78,7 @@ function Word() {
         }
     }
 
+    // 단어 수정
     const handleCorrWord = async (wordId, currentMean) => {
         alert("구현중")
     }
