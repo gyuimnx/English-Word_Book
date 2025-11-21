@@ -40,6 +40,28 @@ function Word() {
         fetchWords();
     }, [chapterId]);
 
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            const isInputFocused = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName);
+
+            // 1. ESC 키
+            if (e.key === 'Escape' && isAddingWord) {
+                setIsAddingWord(false);
+            }
+
+            // 2. 'W' 키
+            if ((e.key === 'w' || e.key === 'W') && !isInputFocused && !isAddingWord) {
+                e.preventDefault();
+                setIsAddingWord(true);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [isAddingWord]);
+
     // 단어 추가
     const handleAddWord = async (e) => {
         e.preventDefault();
@@ -78,7 +100,7 @@ function Word() {
         }
     }
 
-    // ✨ [추가] 단어 암기 상태 토글 함수 (핵심 기능)
+    //  단어 암기 상태 토글 함수 (핵심 기능)
     // ----------------------------------------------------
     const handleToggleMemorized = async (wordId) => {
         try {
@@ -100,7 +122,7 @@ function Word() {
     };
 
     // 단어 수정
-const handleCorrWord = async (wordId, currentEnglish, currentKorean) => {
+    const handleCorrWord = async (wordId, currentEnglish, currentKorean) => {
         // 1. 영어 단어 수정 입력
         const newEnglish = window.prompt("수정할 영어 단어를 입력하세요:", currentEnglish);
         if (newEnglish === null) return; // 취소
@@ -116,15 +138,15 @@ const handleCorrWord = async (wordId, currentEnglish, currentKorean) => {
 
         try {
             // 3. API 요청
-            await api.put(`/words/${wordId}`, { 
-                english: newEnglish.trim(), 
-                korean: newKorean.trim() 
+            await api.put(`/words/${wordId}`, {
+                english: newEnglish.trim(),
+                korean: newKorean.trim()
             });
 
             // 4. 화면 업데이트
-            setWords(prevWords => prevWords.map(word => 
-                word.word_id === wordId 
-                    ? { ...word, english: newEnglish.trim(), korean: newKorean.trim() } 
+            setWords(prevWords => prevWords.map(word =>
+                word.word_id === wordId
+                    ? { ...word, english: newEnglish.trim(), korean: newKorean.trim() }
                     : word
             ));
             alert("단어가 수정되었습니다.");
@@ -147,14 +169,14 @@ const handleCorrWord = async (wordId, currentEnglish, currentKorean) => {
                         <img className="BackImg" src="/img/arrow.png" alt="back" />
                     </button>
                     <h1>{decodeURIComponent(chapterName)}</h1>
-                    <button className="AddWordBtn" onClick={() => setIsAddingWord(true)}>
+                    <button className="AddWordBtn" onClick={() => setIsAddingWord(true)} title="단축키: W">
                         New
                     </button>
                 </header>
 
                 {isAddingWord && (
-                    <div className="WordModalOverlay">
-                        <div className="WordModal">
+                    <div className="WordModalOverlay" onClick={() => setIsAddingWord(false)}> {/* 배경 클릭 시 닫기 */}
+                        <div className="WordModal" onClick={(e) => e.stopPropagation()}>
                             <h2>New Word</h2>
                             <form onSubmit={handleAddWord}>
                                 <input
@@ -164,6 +186,7 @@ const handleCorrWord = async (wordId, currentEnglish, currentKorean) => {
                                     onChange={(e) => setNewWord({ ...newWord, english: e.target.value })}
                                     className="WordBar"
                                     required
+                                    autoFocus // 자동 포커스
                                 />
                                 <input
                                     type="text"

@@ -636,3 +636,27 @@
 .QuizResult li span {
     font-weight: bold;
 }
+
+/* ... 기존 Quiz.css 내용 ... */
+
+/* 퀴즈 홈으로 버튼 스타일 */
+.GoHomeBtn {
+    display: block;
+    width: 100%;
+    margin-top: 30px;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    background-color: #FAAE3D; /* 오렌지 테마 */
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(250, 174, 61, 0.3);
+    transition: all 0.2s ease-in-out;
+}
+
+.GoHomeBtn:hover {
+    background-color: #F89F1D;
+    transform: translateY(-2px);
+}

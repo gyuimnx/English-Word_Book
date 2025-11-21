@@ -26,6 +26,32 @@ function Chapter() {
         fetchChapters();
     }, []);
 
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            // 현재 포커스가 입력창(input, textarea 등)인지 확인
+            const isInputFocused = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName);
+
+            // 1. ESC 키: 모달이 열려있으면 닫기
+            if (e.key === 'Escape' && createOpen) {
+                setCreateOpen(false);
+            }
+
+            // 2. 'C' 키: 입력 중이 아니고 모달이 닫혀있을 때 열기
+            if ((e.key === 'c' || e.key === 'C') && !isInputFocused && !createOpen) {
+                e.preventDefault(); // 브라우저 기본 동작 방지 (선택 사항)
+                setCreateOpen(true);
+            }
+        };
+
+        // 이벤트 리스너 등록
+        window.addEventListener('keydown', handleKeyDown);
+
+        // 컴포넌트 언마운트 시 리스너 제거 (메모리 누수 방지)
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [createOpen]); // createOpen 상태가 바뀔 때마다 리스너 갱신
+
 
     // 새 챕터 생성(DB에 저장)
     async function handleCreateChapter(e) {
@@ -62,7 +88,7 @@ function Chapter() {
     async function UpdateChapter(chapterId, currentName) {
         // 사용자에게 새로운 이름을 입력받음
         const newName = window.prompt("새로운 챕터 이름을 입력하세요:", currentName);
-        
+
         if (newName === null) return; // 취소 버튼 누름
         if (!newName.trim()) {
             alert("챕터 이름을 입력해야 합니다.");
@@ -73,9 +99,9 @@ function Chapter() {
         try {
             // PUT 요청 보내기
             await api.put(`/chapters/${chapterId}`, { name: newName.trim() });
-            
+
             // 화면 목록 업데이트
-            setChapters(prev => prev.map(ch => 
+            setChapters(prev => prev.map(ch =>
                 ch.chapter_id === chapterId ? { ...ch, name: newName.trim() } : ch
             ));
             alert("챕터 이름이 수정되었습니다.");
@@ -98,12 +124,13 @@ function Chapter() {
                     className="LogoutBtn"
                     onClick={handleLogout}
                 >
-                    로그아웃 ({username}님)
+                    로그아웃 ({username})
                 </button>
                 <div className="VOCA">VOCA</div>
                 <button
                     className="CreateBtn"
                     onClick={() => setCreateOpen(true)}
+                    title="단축키: C"
                 >
                     New Chapter
                 </button>
@@ -111,8 +138,8 @@ function Chapter() {
             </h1>
 
             {createOpen && (
-                <div className="ModalOverlay">
-                    <div className="Modal">
+                <div className="ModalOverlay" onClick={() => setCreateOpen(false)}> {/* 배경 클릭 시 닫기 추가 */}
+                    <div className="Modal" onClick={(e) => e.stopPropagation()}> {/* 내부 클릭 전파 방지 */}
                         <h2 className="ModalTitle">New Chapter</h2>
                         <form onSubmit={handleCreateChapter} className="ChapterForm">
                             <input
@@ -120,6 +147,7 @@ function Chapter() {
                                 value={newChapter}
                                 onChange={(e) => setNewChapter(e.target.value)}
                                 placeholder="Chapter Name"
+                                autoFocus // 모달 열리면 바로 입력 가능하게 포커스
                             />
                             <div className="ModalBtn">
                                 <button type="submit" className="submitBtn">add</button>
