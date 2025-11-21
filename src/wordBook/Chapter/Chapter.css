@@ -352,25 +352,40 @@ input[type=text]:focus {
 }
 
 .QuizLink {
+    display: block; /* flex item이지만 내부 레이아웃을 위해 block 처리 */
     text-decoration: none;
     width: 100%;
-    max-width: 400px; /* 버튼 크기 제한 */
+    max-width: 400px; /* 버튼 최대 너비 */
     margin-top: 30px;
+    
+    /* 혹시 모를 내부 정렬 이슈 방지 */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* QuizPage, QuizArea: 불필요한 여백 제거 및 박스 모델 통일 */
+.QuizPage, .QuizArea {
+    width: 100%;
+    box-sizing: border-box; /* 핵심: 패딩이 너비에 포함되도록 설정 */
+    display: flex;
+    justify-content: center; /* 내부 버튼 중앙 정렬 */
 }
 
 .QuizArea {
-    padding: 15px;
-    text-align: center;
+    padding: 0; /* 불필요한 패딩 제거 (버튼 자체 패딩 사용) */
 }
 
 .QuizBtn {
-    background-color: #007bff; /* 파란색 계열 (퀴즈 시작) */
+    background-color: #007bff; /* 파란색 계열 */
     color: white;
     padding: 15px 30px;
     font-size: 20px;
     border: none;
     border-radius: 10px;
-    width: 100%;
+    
+    width: 100%; /* 부모(400px) 꽉 채우기 */
+    box-sizing: border-box; /* 핵심: 패딩 포함 너비 계산 */
+    
     font-weight: 700;
     cursor: pointer;
     box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
@@ -379,5 +394,4 @@ input[type=text]:focus {
 
 .QuizBtn:hover {
     background-color: #0056b3;
-    transform: translateY(-2px);
 }
