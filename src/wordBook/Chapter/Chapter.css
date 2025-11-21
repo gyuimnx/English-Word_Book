@@ -1,178 +1,3 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Creepster&family=Luckiest+Guy&display=swap');
-
-body {
-    background-color: #f8f5ec;
-}
-
-.Chapter {
-    display: flex;
-    flex-direction: column;
-
-    justify-content: flex-start;
-    align-items: center;
-    background-color: #FFF4CC;
-    text-align: center;
-
-    margin: 2% auto;
-    width: 100%;
-    max-width: 1130px;
-    min-height: 88vh;
-    padding: 15px;
-
-    border-radius: 15px;
-
-    transition: filter 0.3s ease-in-out;
-    position: relative;
-
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.Header {
-    display: flex; 
-    justify-content: space-between;
-    align-items: center; 
-    width: 100%;
-    padding: 10px;
-    z-index: 10; 
-    position: relative;
-
-    margin-bottom: 30px;
-}
-
-.VOCA {
-font-size: 70px;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.CreateBtn {
-    background-color: #0065d1;
-    color: white;
-    padding: 13px;
-    font-size: large;
-    border: none;
-    border-radius: 15px;
-    margin-left: 10px;
-}
-
-.CreateBtn:hover {
-    background-color: #0a529f;
-}
-
-.ModalOverlay {
-    position: fixed;
-    top: 20%; 
-    width: 300px;
-    height: 200px;
-    background-color: white;
-
-    border: 3px solid black;
-    border-radius: 20px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.Modal {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    z-index: 1001;
-}
-
-.ModalTitle {
-    margin: 10px;
-}
-
-.ModalBtn {
-    margin-top: 5%;
-    position: relative;
-    width: 260px;
-}
-
-input[type=text] {
-    width: 90%;
-    height: 30px;
-    font-size: 15px;
-
-    margin-bottom: 10px;
-}
-
-.submitBtn {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-right: 10px;
-    margin-left: 50%;
-}
-
-.cancelBtn {
-    background-color: #6c757d;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.ChapterList {
-    flex-grow: 1;
-    width: 100%;
-    padding: 10px;
-    overflow-y: auto;
-    max-height: calc(100vh - 200px);
-}
-
-.QuizArea {
-    margin-top: 20px;
-    color: white;
-    text-align: center;
-    border-radius: 5px;
-}
-
-.QuizBtn {
-    background-color: #0065d1;
-    color: white;
-    padding: 10px;
-    font-size: 24px;
-    border: none;
-    border-radius: 15px;
-    width: 100px;
-
-    cursor: pointer;
-}
-
-.QuizBtn:hover {
-    background-color: #0a529f;
-}
-
-.ChapterList {
-    width: 1050px;
-    border-radius: 10px;
-    margin: 20px 0 20px 0;
-
-    overflow-y: auto;
-    padding: 15px;
-}
-
-.LogoutBtn {
-    background-color: #dc3545;
-    color: white;
-}  */
-
-
-
-/* src/wordBook/Chapter/Chapter.css (전체 교체) */
-
-/* ---------------------------------------------------- */
-/* 1. 기본 컨테이너 */
-/* ---------------------------------------------------- */
 .Chapter {
     display: flex;
     flex-direction: column;
@@ -187,15 +12,12 @@ input[type=text] {
     min-height: 88vh;
     padding: 30px;
 
-    border-radius: 15px; /* 부드러운 모서리 */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* 은은한 그림자 */
+    border-radius: 15px; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); 
     position: relative;
     box-sizing: border-box;
 }
 
-/* ---------------------------------------------------- */
-/* 2. 헤더 및 버튼 */
-/* ---------------------------------------------------- */
 .Header {
     display: flex; 
     justify-content: space-between;
@@ -210,7 +32,7 @@ input[type=text] {
 .VOCA {
     font-size: 50px;
     font-weight: 800;
-    color: #FAAE3D; /* 오렌지색 강조 */
+    color: #FAAE3D; 
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
@@ -219,7 +41,7 @@ input[type=text] {
 }
 
 .CreateBtn {
-    background-color: #FAAE3D; /* 주 액센트 색상 */
+    background-color: #FAAE3D;
     color: white;
     padding: 10px 20px;
     font-size: 16px;
@@ -255,16 +77,13 @@ input[type=text] {
     transform: translateY(-1px);
 }
 
-/* ---------------------------------------------------- */
-/* 3. 모달 (New Chapter) */
-/* ---------------------------------------------------- */
 .ModalOverlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+    background-color: rgba(0, 0, 0, 0.5); 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -326,7 +145,7 @@ input[type=text]:focus {
 }
 
 .submitBtn {
-    background-color: #28a745; /* 녹색 (생성) */
+    background-color: #28a745; 
     color: white;
 }
 .submitBtn:hover {
@@ -341,9 +160,6 @@ input[type=text]:focus {
     background-color: #e0e0e0;
 }
 
-/* ---------------------------------------------------- */
-/* 4. 리스트 컨테이너 및 퀴즈 링크 */
-/* ---------------------------------------------------- */
 .ChapterList {
     width: 100%;
     max-width: 1050px;
@@ -352,39 +168,37 @@ input[type=text]:focus {
 }
 
 .QuizLink {
-    display: block; /* flex item이지만 내부 레이아웃을 위해 block 처리 */
+    display: block; 
     text-decoration: none;
     width: 100%;
-    max-width: 400px; /* 버튼 최대 너비 */
+    max-width: 400px; 
     margin-top: 30px;
     
-    /* 혹시 모를 내부 정렬 이슈 방지 */
     margin-left: auto;
     margin-right: auto;
 }
 
-/* QuizPage, QuizArea: 불필요한 여백 제거 및 박스 모델 통일 */
 .QuizPage, .QuizArea {
     width: 100%;
-    box-sizing: border-box; /* 핵심: 패딩이 너비에 포함되도록 설정 */
+    box-sizing: border-box; 
     display: flex;
-    justify-content: center; /* 내부 버튼 중앙 정렬 */
+    justify-content: center;
 }
 
 .QuizArea {
-    padding: 0; /* 불필요한 패딩 제거 (버튼 자체 패딩 사용) */
+    padding: 0; 
 }
 
 .QuizBtn {
-    background-color: #007bff; /* 파란색 계열 */
+    background-color: #007bff; 
     color: white;
     padding: 15px 30px;
     font-size: 20px;
     border: none;
     border-radius: 10px;
     
-    width: 100%; /* 부모(400px) 꽉 채우기 */
-    box-sizing: border-box; /* 핵심: 패딩 포함 너비 계산 */
+    width: 100%; 
+    box-sizing: border-box; 
     
     font-weight: 700;
     cursor: pointer;

@@ -1,37 +1,27 @@
 import React, { useState, useEffect } from "react";
 import "./Quiz.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import api from "../../api";
 
 function Quiz() {
-    // const [bringChapters, setBringChapters] = useState([]); //로컬스토리지에서 불러온 챕터들
-    // const [selectedChapter, setSelectedChapter] = useState(null); //선택한 챕터
 
-    // const [quizWord, setQuizWord] = useState([]); //퀴즈에 사용할 단어
-    // const [currentWordIndex, setCurrentWordIndex] = useState(0); //현재 문제 인덱스
-    // const [answer, setAnswer] = useState(""); //입력한 답
-    // const [quizStart, setQuizStart] = useState(false); //퀴즈 시작했는가?
-    // const [score, setScore] = useState(0); //총 정답
-    // const [wrong, setWrong] = useState(0); //총 오답
-
-    const [bringChapters, setBringChapters] = useState([]); // 챕터 목록
+    const [bringChapters, setBringChapters] = useState([]); 
     const [selectedChapter, setSelectedChapter] = useState(null); // 선택된 챕터
 
     // 퀴즈 진행 관련 상태
-    const [wordsInChapter, setWordsInChapter] = useState([]); // 퀴즈 단어 목록 (기존 quizWord)
+    const [wordsInChapter, setWordsInChapter] = useState([]); // 퀴즈 단어 목록
     const [quizMode, setQuizMode] = useState('random'); // 퀴즈 모드
-    const [quizIndex, setQuizIndex] = useState(0); // 현재 문제 인덱스 (기존 currentWordIndex)
-    const [userAnswer, setUserAnswer] = useState(''); // 입력한 답 (기존 answer)
+    const [quizIndex, setQuizIndex] = useState(0); // 현재 문제 인덱스
+    const [userAnswer, setUserAnswer] = useState(''); // 입력한 답
     const [isChecking, setIsChecking] = useState(false); // 정답 확인 중 여부
-    const [quizResults, setQuizResults] = useState([]); // 퀴즈 결과 기록 (기존 score/wrong 포함)
-    const [isQuizDone, setIsQuizDone] = useState(false); // 퀴즈 종료 여부 (기존 quizEnd)
+    const [quizResults, setQuizResults] = useState([]); // 퀴즈 결과 기록
+    const [isQuizDone, setIsQuizDone] = useState(false); // 퀴즈 종료 여부
     const [openChapter, setOpenChapter] = useState(false); // 챕터 선택 모달
 
-    const [quizEnd, setQuizEnd] = useState(false); //퀴즈 종료됐는가
+    const [quizEnd, setQuizEnd] = useState(false); // 퀴즈 종료됐는가
 
     const fetchChapters = async () => {
         try {
-            // GET /api/wordbook/chapters
             const response = await api.get('/chapters');
             setBringChapters(response.data.chapters || []);
         } catch (error) {
@@ -45,30 +35,15 @@ function Quiz() {
 
     const fetchWordsForChapter = async (chapterId) => {
         try {
-            // GET /api/wordbook/words/:chapterId
             const response = await api.get(`/words/${chapterId}`);
-            return response.data.words || []; // 단어 목록 반환
+            return response.data.words || []; 
         } catch (error) {
             console.error(`챕터 ${chapterId}의 단어 로드 실패:`, error);
             return [];
         }
     }
 
-
-    //게임 시작 함수. shuffleArray에 선택한 챕터의 단어를 랜덤으로 배치시켜서 저장
-    // const startQuiz = () => {
-    //     //null이 아니고 단어 길이가 1이상이면 실행
-    //     if (selectedChapter && selectedChapter.words.length > 0) {
-    //         const shuffleArray = [...selectedChapter.words].sort(() => Math.random() - 0.5);
-    //         setQuizWord(shuffleArray);
-    //         setCurrentWordIndex(0);
-    //         setQuizStart(true);
-    //         setScore(0);
-    //         setWrong(0);
-    //     };
-    // };
-
-    // 퀴즈 시작 (기존 로직 유지 및 DB 호출 반영)
+    // 퀴즈 시작
     const handleStartQuiz = async () => {
         if (!selectedChapter) {
             alert('챕터를 선택해주세요.');
@@ -92,45 +67,24 @@ function Quiz() {
 
         let initialQuizWords = unmemorizedWords;
 
-        // 단어를 무작위로 섞습니다 (random mode)
+        // 단어 랜덤 섞기
         if (quizMode === 'random') {
             initialQuizWords = [...unmemorizedWords].sort(() => Math.random() - 0.5);
         }
 
-        setWordsInChapter(initialQuizWords); // 퀴즈 단어 목록 설정
+        setWordsInChapter(initialQuizWords); 
         setQuizIndex(0);
         setQuizResults([]);
         setIsQuizDone(false);
         setOpenChapter(false);
     };
 
-    // //답변 제출 함수
-    // const handleSubmitAnswer = (e) => {
-    //     e.preventDefault();
-
-    //     // 정답 확인 (대소문자 무시)
-    //     if (answer.trim().toLowerCase() === quizWord[currentWordIndex].word.toLowerCase()) {
-    //         setScore(prevScore => prevScore + 1);
-    //     } else {
-    //         setWrong(prevWrong => prevWrong + 1);
-    //     }
-
-    //     if (currentWordIndex < quizWord.length - 1) { //다음 문제로 이동
-    //         setCurrentWordIndex(prevIndex => prevIndex + 1);
-    //     } else {
-    //         setQuizStart(false); //퀴즈 종료
-    //         setQuizEnd(true); //퀴즈 종료 됐다로 바꾸기
-    //     }
-    //     setAnswer(''); //입력 초기화
-    // };
-
-    // 정답 확인 로직 (기존 로직 유지)
-    // ----------------------------------------------------
+    // 정답 확인
     const handleCheckAnswer = () => {
         if (isChecking || userAnswer.trim() === '') return;
 
         const currentWord = wordsInChapter[quizIndex];
-        // 대소문자, 공백 무시하고 비교
+        // 대소문자, 공백 무시
         const isCorrect = userAnswer.trim().toLowerCase() === currentWord.korean.trim().toLowerCase();
 
         setQuizResults(prev => [...prev, {
@@ -142,9 +96,7 @@ function Quiz() {
         setIsChecking(true);
     };
 
-    // ----------------------------------------------------
-    // 다음 단어 로직 (기존 로직 유지)
-    // ----------------------------------------------------
+    // 다음 단어
     const handleNextWord = () => {
         if (!isChecking) return;
 
@@ -157,102 +109,10 @@ function Quiz() {
         }
     };
 
-    // //스토리지에서 챕터 불러오기
-    // useEffect(() => {
-    //     const storedChapters = JSON.parse(localStorage.getItem('chapters')) || [];
-    //     setBringChapters(storedChapters);
-    // }, []);
-
-    //챕터 선택 함수
+    //챕터 선택
     const handleChapterSelect = (chapter) => {
         setSelectedChapter(chapter);
     };
-
-    //     return (
-    //         <div className="Quiz_container">
-    //             <div className="Quiz">
-    //                 {!quizStart && !quizEnd ? (
-    //                     <div>
-    //                         <div className="con">
-    //                             <h2>챕터 선택</h2>
-    //                             <Link to={'/'}>
-    //                                 <button className="BackHome">
-    //                                     <img className="homeImg" src="/img/home.png" alt="home" />
-    //                                 </button>
-    //                             </Link>
-    //                         </div>
-    //                         {bringChapters.length === 0 ? (<p>생성된 챕터가 없습니다.</p>) : (
-    //                             <div className="ChapterList_Q">
-    //                                 {bringChapters.map((bringChapter, index) => (
-    //                                     <div key={index}
-    //                                         className={`QuizChapterItem ${selectedChapter === bringChapter ? 'selected' : ''} ${bringChapter.words.length === 0 ? 'disabled' : ''
-    //                                             }`}
-    //                                         onClick={() => {
-    //                                             if (bringChapter.words.length > 0) handleChapterSelect(bringChapter)
-    //                                         }}>
-    //                                         {bringChapter.name}
-    //                                         <div>({bringChapter.words.length} 단어)</div>
-    //                                     </div>
-    //                                 ))}
-    //                             </div>
-    //                         )}
-    //                         <div className="startBtn_container">
-    //                             <button
-    //                                 className="QuizStartBtn"
-    //                                 onClick={startQuiz}
-    //                                 disabled={!selectedChapter || selectedChapter.words.length === 0}
-    //                             >{selectedChapter ? `${selectedChapter.name} : START` : "챕터를 선택하세요."}
-    //                             </button>
-    //                         </div>
-    //                     </div>
-    //                 ) : quizEnd ? (
-    //                     <div className="QuizResult">
-    //                         <div className="quizEndCon">
-    //                             <button
-    //                                 className="backBtn_Quiz"
-    //                                 onClick={() => {
-    //                                     setQuizEnd(false);
-    //                                     setSelectedChapter(null);
-    //                                 }}>
-    //                                     <img className="imgQ" src="/img/arrow.png" alt="back" />
-    //                                 </button>
-    //                             <h1>FINISH!</h1>
-    //                             <h2>SCORE : {score} / {quizWord.length}</h2>
-    //                         </div>
-    //                     </div>
-    //                 ) : (
-    //                     <div className="QuizSection">
-    //                         <button className="backBtn_Q" onClick={() => setQuizStart(false)}>
-    //                             <img className="backImg_Q" src="/img/arrow.png" alt="back" />
-    //                         </button>
-    //                         <h1>[{selectedChapter.name}] Word Quiz</h1>
-    //                         <div className="OX">
-    //                             <span className="O">O</span> {score}
-    //                             <span className="X">X</span> {wrong}
-    //                         </div>
-    //                         <div className="QuizQuestion">
-    //                             <h2>다음 단어의 영어 표현 작성</h2>
-    //                             <h3 className="question">{quizWord[currentWordIndex].meaning}</h3>
-    //                         </div>
-    //                         <form className="formQuiz" onSubmit={handleSubmitAnswer}>
-    //                             <input
-    //                                 className="inputWord"
-    //                                 type="text"
-    //                                 value={answer}
-    //                                 onChange={(e) => setAnswer(e.target.value)}
-    //                                 placeholder="영어 단어를 입력하세요."
-    //                             />
-    //                             <button className="submitBtn_Q" type="submit">제출</button>
-    //                         </form>
-
-    //                     </div>
-    //                 )}
-    //             </div>
-    //         </div>
-    //     );
-    // }
-
-    // export default Quiz;
 
     const handleGoHome = () => {
         setSelectedChapter(null);
@@ -269,10 +129,10 @@ function Quiz() {
         if (e.key === 'Enter') {
             e.preventDefault(); // 폼 제출 등 기본 동작 방지
             if (isChecking) {
-                // 정답 확인 상태라면 -> 다음 단어로
+                // 정답 확인 상태 -> 다음 단어
                 handleNextWord();
             } else {
-                // 입력 중이라면 -> 정답 확인
+                // 입력 중이 -> 정답 확인
                 handleCheckAnswer();
             }
         }
@@ -287,7 +147,6 @@ function Quiz() {
                 <h1>Quiz</h1>
             </header>
 
-            {/* 챕터 선택 모달 */}
             {openChapter && (
                 <div className="QuizModalOverlay" onClick={() => setOpenChapter(false)}>
                     <div className="QuizModal" onClick={e => e.stopPropagation()}>
@@ -303,7 +162,6 @@ function Quiz() {
                                 className="ChapterSelect"
                                 value={selectedChapter?.chapter_id || ''}
                                 onChange={(e) => {
-                                    // 선택된 챕터 객체 저장 (DB ID를 사용)
                                     const selectedId = parseInt(e.target.value);
                                     const chapter = bringChapters.find(ch => ch.chapter_id === selectedId);
                                     setSelectedChapter(chapter);
@@ -353,24 +211,18 @@ function Quiz() {
                     </button>
                 )}
 
-                {/* 퀴즈 진행 UI */}
                 {wordsInChapter.length > 0 && !isQuizDone && (
                     <div className="QuizArea">
                         <p className="WordCount">{quizIndex + 1} / {wordsInChapter.length}</p>
                         <h2 className="QuizWord">{wordsInChapter[quizIndex].english}</h2>
 
                         <input
-                            // ref={answerInputRef}
                             className="AnswerInput"
                             type="text"
                             value={userAnswer}
                             onChange={(e) => setUserAnswer(e.target.value)}
                             placeholder="단어의 뜻을 입력하세요"
-
-                            // 1. 키보드 이벤트 핸들러 연결 (Enter 처리)
                             onKeyDown={handleInputKeyDown}
-
-                            // 2. disabled 대신 readOnly 사용 (포커스 유지 & 키 이벤트 수신 가능)
                             readOnly={isChecking}
 
                             autoFocus
@@ -387,7 +239,6 @@ function Quiz() {
                     </div>
                 )}
 
-                {/* 퀴즈 결과 UI */}
                 {isQuizDone && (
                     <div className="QuizResult">
                         <h2>퀴즈 종료!</h2>

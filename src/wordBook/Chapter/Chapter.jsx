@@ -17,7 +17,7 @@ function Chapter() {
         try {
             const response = await api.get('/chapters');
             setChapters(response.data.chapters || []);
-        } catch (error) { // 에러 처리
+        } catch (error) {
             console.error('챕터 목록 조회 실패:', error);
         }
     };
@@ -28,17 +28,16 @@ function Chapter() {
 
     useEffect(() => {
         const handleKeyDown = (e) => {
-            // 현재 포커스가 입력창(input, textarea 등)인지 확인
+            // 현재 포커스가 입력창인지 확인
             const isInputFocused = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName);
 
-            // 1. ESC 키: 모달이 열려있으면 닫기
+            // ESC : 모달이 열려있으면 닫기
             if (e.key === 'Escape' && createOpen) {
                 setCreateOpen(false);
             }
 
-            // 2. 'C' 키: 입력 중이 아니고 모달이 닫혀있을 때 열기
+            // C : 입력 중이 아니고 모달이 닫혀있을 때 열기
             if ((e.key === 'c' || e.key === 'C') && !isInputFocused && !createOpen) {
-                e.preventDefault(); // 브라우저 기본 동작 방지 (선택 사항)
                 setCreateOpen(true);
             }
         };
@@ -46,14 +45,14 @@ function Chapter() {
         // 이벤트 리스너 등록
         window.addEventListener('keydown', handleKeyDown);
 
-        // 컴포넌트 언마운트 시 리스너 제거 (메모리 누수 방지)
+        // 컴포넌트 언마운트 시 리스너 제거
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
         };
-    }, [createOpen]); // createOpen 상태가 바뀔 때마다 리스너 갱신
+    }, [createOpen]);
 
 
-    // 새 챕터 생성(DB에 저장)
+    // 새 챕터 생성
     async function handleCreateChapter(e) {
         e.preventDefault();
         const chapterName = newChapter.trim();
@@ -71,13 +70,12 @@ function Chapter() {
         };
     };
 
-    // 챕터 삭제(DB에서 삭제)
+    // 챕터 삭제
     async function DeleteChapter(chapterId) {
         if (!window.confirm('해당 챕터의 모든 단어가 삭제됩니다. 정말 삭제하시겠습니까?'))
             return;
         try {
             await api.delete(`/chapters/${chapterId}`);
-            // 삭제 성공하면 목록에서 챕터 삭제(DB ID 기반 필터링)
             setChapters(prev => prev.filter(ch => ch.chapter_id !== chapterId));
             alert("챕터 삭제 성공");
         } catch (error) {
@@ -86,10 +84,9 @@ function Chapter() {
     }
 
     async function UpdateChapter(chapterId, currentName) {
-        // 사용자에게 새로운 이름을 입력받음
         const newName = window.prompt("새로운 챕터 이름을 입력하세요:", currentName);
 
-        if (newName === null) return; // 취소 버튼 누름
+        if (newName === null) return; // 취소 버튼
         if (!newName.trim()) {
             alert("챕터 이름을 입력해야 합니다.");
             return;
@@ -97,7 +94,7 @@ function Chapter() {
         if (newName === currentName) return; // 변경 사항 없음
 
         try {
-            // PUT 요청 보내기
+            // PUT 요청
             await api.put(`/chapters/${chapterId}`, { name: newName.trim() });
 
             // 화면 목록 업데이트
@@ -138,8 +135,8 @@ function Chapter() {
             </h1>
 
             {createOpen && (
-                <div className="ModalOverlay" onClick={() => setCreateOpen(false)}> {/* 배경 클릭 시 닫기 추가 */}
-                    <div className="Modal" onClick={(e) => e.stopPropagation()}> {/* 내부 클릭 전파 방지 */}
+                <div className="ModalOverlay" onClick={() => setCreateOpen(false)}>
+                    <div className="Modal" onClick={(e) => e.stopPropagation()}>
                         <h2 className="ModalTitle">New Chapter</h2>
                         <form onSubmit={handleCreateChapter} className="ChapterForm">
                             <input

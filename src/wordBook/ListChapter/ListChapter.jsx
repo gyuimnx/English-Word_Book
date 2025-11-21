@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 function ListChapter({ chapters, DeleteChapter, UpdateChapter }) {
 
     const handleCorrChapter = async (e, chapterId, currentName) => {
-        e.preventDefault(); //Link의 기본 동작을 막음
-        e.stopPropagation(); //이벤트가 상위로 퍼지는거 방지
+        e.preventDefault(); 
+        e.stopPropagation(); 
 
         UpdateChapter(chapterId, currentName);
     };
@@ -25,8 +25,6 @@ function ListChapter({ chapters, DeleteChapter, UpdateChapter }) {
                             to={`/Word/${encodeURIComponent(chapter.name)}`} 
                             state={{ chapterId: chapter.chapter_id }}
                         >
-                            {/* e.preventDefault(); e.stopPropagation(); 제거 후, 
-                                  버튼 onClick에서만 이벤트 중단 로직 추가 */}
                             {chapter.name}
                             <div className='Btns'>
                                 <button

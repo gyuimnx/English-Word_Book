@@ -1,298 +1,8 @@
-/* .Quiz_container {
-    margin: 0;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f8f5ec;
-    min-height: 100vh;
-}
-
-.Quiz {
-    background-color: #FFF4CC;
-    width: 100%;
-    max-width: 1000px;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    margin: 20px;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-
-    align-items: center;
-
-    position: relative;
-}
-
-.ChapterList_Q {
-    background-color: #FFE5A1;
-    padding: 15px;
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    justify-content: center;
-    border-radius: 10px;
-}
-
-.QuizChapterItem {
-    background-color: #FFC107;
-    color: black;
-
-    padding: 10px;
-    margin: 5px;
-    width: 120px;
-    height: 50px;
-
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-
-    font-weight: bold;
-    font-size: 16px;
-
-    border-radius: 10px;
-    transition: background-color 0.3s ease, transform 0.2s;
-    box-shadow: 1px 2px 2px 2px rgba(0, 0, 0, 0.1);
-}
-
-.QuizChapterItem:hover {
-    cursor: pointer;
-    background-color: #FFDD67;
-    transform: translateY(-3px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
-}
-
-.QuizChapterItem.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transition: background-color 0s ease, transform 0s;
-    background-color: #FFC107;
-    transform: translateY(0);
-    box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
-}
-
-.QuizStartBtn {
-    width: 700px;
-    height: 50px;
-
-    border: none;
-    border-radius: 10px;
-
-    margin-top: 20px;
-    margin-bottom: 20px;
-
-    font-size: 20px;
-    font-weight: bold;
-
-    background-color: #FFAB40;
-    color: back;
-}
-
-.QuizStartBtn:hover {
-    cursor: pointer;
-    background-color: #ffcb87;
-    transition: background-color 0.5s ease, transform 0.2s;
-}
-
-.QuizStartBtn:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-}
-
-.QuizStartBtn:disabled:hover {
-    background-color: #FFAB40;
-}
-
-.startBtn_container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-}
-
-.OX {
-    font-size: 30px;
-    font-weight: 500;
-    display: flex;
-    gap: 20px;
-
-    justify-content: left;
-}
-
-.O {
-    color: blue;
-    font-size: 30px;
-    font-weight: 800;
-}
-
-.X {
-    color: red;
-    font-size: 30px;
-    font-weight: 800;
-}
-
-.question {
-    margin-bottom: 15px;
-    color: green;
-}
-
-.formQuiz > input {
-    margin-bottom: 20px;
-    border-radius: 5px;
-    border: 2px solid #faaf00;
-    padding: 7px;
-}
-
-.formQuiz {
-    display: flex;
-    gap: 10px;
-}
-
-.submitBtn_Q {
-    width: 60px;
-    height: 45px;
-
-    background-color: #0065d1;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: medium;
-    cursor: pointer;
-}
-
-.submitBtn_Q:hover {
-    background-color: #0051a7;
-}
-
-.homeImg {
-    width: 30px;
-    height: 33px;
-}
-
-.BackHome {
-    background-color: transparent;
-    border-radius: 30px;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-}
-
-.BackHome:hover {
-    background-color: whitesmoke;
-}
-
-.con {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-}
-
-.backImg_Q {
-    width: 33px;
-    height: 33px;
-}
-
-.backBtn_Q {
-    border: none;
-    background-color: transparent;
-    border-radius: 30px;
-
-    position: absolute;
-    left: 20px;
-    top: 30px;
-
-    padding: 5px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.backBtn_Q:hover {
-    background-color: whitesmoke;
-}
-
-.quizEndCon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.QuizResult {
-    position: relative;
-    width: 1000px;
-    height: 300px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.backBtn_Quiz {
-    position: absolute;
-    left: 5px;
-    top: 10px;
-
-    border: none;
-    background-color: transparent;
-    border-radius: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 5px;
-    cursor: pointer;
-}
-
-.backBtn_Quiz:hover {
-    background-color: whitesmoke;
-}
-
-.imgQ {
-    width: 33px;
-    height: 30px;
-}
-
-.quizEndCon > h1 {
-    color: #0065d1;
-}
-
-.QuizSection {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.QuizQuestion {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-}
-
-.QuizQuestion > h2 {
-    margin-bottom: 7px;
-}
-
-.question {
-    margin: 0 0 10px 0;
-} */
-
-
-/* ---------------------------------------------------- */
-/* 1. 기본 컨테이너 (카드 스타일) */
-/* ---------------------------------------------------- */
 .Quiz_container {
     display: flex;
     flex-direction: column;
     align-items: center;
     
-    /* 카드 배경 및 그림자 */
     background-color: #ffffff; 
     margin: 2% auto;
     width: 100%;
@@ -306,9 +16,6 @@
     position: relative;
 }
 
-/* ---------------------------------------------------- */
-/* 2. 헤더 영역 */
-/* ---------------------------------------------------- */
 .QuizHeader {
     display: flex;
     justify-content: space-between;
@@ -328,7 +35,6 @@
     text-align: center;
 }
 
-/* BackBtn 스타일 (다른 페이지와 통일) */
 .BackBtn {
     width: 40px;
     height: 40px;
@@ -350,9 +56,6 @@
     height: 24px;
 }
 
-/* ---------------------------------------------------- */
-/* 3. 퀴즈 본문 (메인 영역) */
-/* ---------------------------------------------------- */
 .QuizBody {
     width: 100%;
     display: flex;
@@ -361,9 +64,8 @@
     flex-grow: 1;
 }
 
-/* 챕터 선택 버튼 */
 .SelectChapterBtn {
-    background-color: #FAAE3D; /* 메인 오렌지색 */
+    background-color: #FAAE3D; 
     color: white;
     padding: 12px 30px;
     font-size: 18px;
@@ -378,7 +80,6 @@
 
 .SelectChapterBtn:hover {
     background-color: #ffa012;
-    /* transform: translateY(-2px); */
 }
 
 .SelectChapterBtn:disabled {
@@ -388,16 +89,13 @@
     transform: none;
 }
 
-/* ---------------------------------------------------- */
-/* 4. 퀴즈 진행 영역 (QuizArea) */
-/* ---------------------------------------------------- */
 .QuizArea {
     width: 100%;
     max-width: 600px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #f8f9fa; /* 연한 회색 배경 */
+    background-color: #f8f9fa; 
     padding: 40px;
     border-radius: 20px;
     box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
@@ -436,7 +134,7 @@
 .CheckResult {
     font-size: 20px;
     font-weight: 700;
-    height: 30px; /* 공간 확보 */
+    height: 30px; 
     margin-bottom: 20px;
 }
 
@@ -460,7 +158,7 @@
 }
 
 .CheckBtn {
-    background-color: #28a745; /* 정답 확인: 초록 */
+    background-color: #28a745;
 }
 .CheckBtn:hover { background-color: #218838; }
 .CheckBtn:disabled { background-color: #94d3a2; cursor: default; }
@@ -471,10 +169,6 @@
 .NextBtn:hover { background-color: #0069d9; }
 .NextBtn:disabled { background-color: #80bdff; cursor: default; }
 
-
-/* ---------------------------------------------------- */
-/* 5. 모달 (챕터 선택) */
-/* ---------------------------------------------------- */
 .QuizModalOverlay {
     position: fixed;
     top: 0;
@@ -580,9 +274,6 @@
     cursor: not-allowed;
 }
 
-/* ---------------------------------------------------- */
-/* 6. 퀴즈 결과 화면 */
-/* ---------------------------------------------------- */
 .QuizResult {
     width: 100%;
     max-width: 700px;
@@ -637,9 +328,6 @@
     font-weight: bold;
 }
 
-/* ... 기존 Quiz.css 내용 ... */
-
-/* 퀴즈 홈으로 버튼 스타일 */
 .GoHomeBtn {
     display: block;
     width: 100%;
@@ -648,7 +336,7 @@
     font-size: 18px;
     font-weight: bold;
     color: white;
-    background-color: #FAAE3D; /* 오렌지 테마 */
+    background-color: #FAAE3D; 
     border: none;
     border-radius: 10px;
     cursor: pointer;

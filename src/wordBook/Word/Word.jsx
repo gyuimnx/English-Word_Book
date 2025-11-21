@@ -14,7 +14,7 @@ function Word() {
     const [newWord, setNewWord] = useState({ english: '', korean: '' });
     const [isAddingWord, setIsAddingWord] = useState(false);
 
-    const [loading, setLoading] = useState(true); // 로딩 상태
+    const [loading, setLoading] = useState(true);
 
     const fetchWords = async () => {
         if (!chapterId) {
@@ -24,9 +24,8 @@ function Word() {
         }
 
         try {
-            setLoading(true); // GET / api/wordbook/words/:chapterId 요청
+            setLoading(true); 
             const response = await api.get(`/words/${chapterId}`);
-            // 응답 구조가 { words: [...] } 이므로 .words에 접근
             setWords(response.data.words || []);
         } catch (error) {
             console.error("단어 목록 조회 실패:", error);
@@ -36,7 +35,7 @@ function Word() {
         }
     };
 
-    useEffect(() => { // chapterID가 변경될 때 실행
+    useEffect(() => { 
         fetchWords();
     }, [chapterId]);
 
@@ -44,12 +43,12 @@ function Word() {
         const handleKeyDown = (e) => {
             const isInputFocused = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName);
 
-            // 1. ESC 키
+            // ESC
             if (e.key === 'Escape' && isAddingWord) {
                 setIsAddingWord(false);
             }
 
-            // 2. 'W' 키
+            // W
             if ((e.key === 'w' || e.key === 'W') && !isInputFocused && !isAddingWord) {
                 e.preventDefault();
                 setIsAddingWord(true);
@@ -77,8 +76,8 @@ function Word() {
         };
 
         try {
-            const response = await api.post('/words', wordDate); // POST /api/wordbook/words 요청
-            fetchWords(); //성공 후 목록을 갱신하기 위해 다시 조회
+            const response = await api.post('/words', wordDate); 
+            fetchWords(); //성공 후 목록을 갱신
             setNewWord({ english: '', korean: '' });
             setIsAddingWord(false);
             alert(response.data.message);
@@ -100,21 +99,17 @@ function Word() {
         }
     }
 
-    //  단어 암기 상태 토글 함수 (핵심 기능)
-    // ----------------------------------------------------
+    //  단어 암기 상태 토글
     const handleToggleMemorized = async (wordId) => {
         try {
-            // PUT /api/wordbook/words/:wordId/toggle 요청
             const response = await api.put(`/words/${wordId}/toggle`);
 
-            // UI 상태 즉시 업데이트 (DB 통신 결과를 반영)
+            // UI 상태 즉시 업데이트
             setWords(prevWords => prevWords.map(word =>
                 word.word_id === wordId
                     ? { ...word, is_memorized: response.data.is_memorized }
                     : word
             ));
-
-            // alert(response.data.message);
         } catch (error) {
             console.error('암기 상태 토글 실패:', error);
             alert('암기 상태 변경에 실패했습니다.');
@@ -123,13 +118,13 @@ function Word() {
 
     // 단어 수정
     const handleCorrWord = async (wordId, currentEnglish, currentKorean) => {
-        // 1. 영어 단어 수정 입력
+        // 영어 단어 수정
         const newEnglish = window.prompt("수정할 영어 단어를 입력하세요:", currentEnglish);
-        if (newEnglish === null) return; // 취소
+        if (newEnglish === null) return;
 
-        // 2. 뜻 수정 입력
+        // 뜻 수정
         const newKorean = window.prompt("수정할 뜻을 입력하세요:", currentKorean);
-        if (newKorean === null) return; // 취소
+        if (newKorean === null) return;
 
         if (!newEnglish.trim() || !newKorean.trim()) {
             alert("단어와 뜻을 모두 입력해야 합니다.");
@@ -137,13 +132,11 @@ function Word() {
         }
 
         try {
-            // 3. API 요청
             await api.put(`/words/${wordId}`, {
                 english: newEnglish.trim(),
                 korean: newKorean.trim()
             });
 
-            // 4. 화면 업데이트
             setWords(prevWords => prevWords.map(word =>
                 word.word_id === wordId
                     ? { ...word, english: newEnglish.trim(), korean: newKorean.trim() }
@@ -186,7 +179,7 @@ function Word() {
                                     onChange={(e) => setNewWord({ ...newWord, english: e.target.value })}
                                     className="WordBar"
                                     required
-                                    autoFocus // 자동 포커스
+                                    autoFocus
                                 />
                                 <input
                                     type="text"

@@ -23,7 +23,6 @@ app.use(express.json());
 // URL-encoded 본문 파싱 설정
 app.use(express.urlencoded({ extended: true }));
 
-// 라우트 정의
 // 기본 라우트
 app.get('/', (req, res) => {
     res.send('English Wordbook Server is running!');
@@ -50,5 +49,3 @@ db.getConnection()
         console.log('DB 연결 오류로 서버 시작 실패');
         process.exit(1); // 연결 실패 시 서버 종료
     });
-
-// npm run dev : 서버를 개발 모드로 실행 (nodemon 사용)
