@@ -100,8 +100,39 @@ function Word() {
     };
 
     // 단어 수정
-    const handleCorrWord = async (wordId, currentMean) => {
-        alert("구현중")
+const handleCorrWord = async (wordId, currentEnglish, currentKorean) => {
+        // 1. 영어 단어 수정 입력
+        const newEnglish = window.prompt("수정할 영어 단어를 입력하세요:", currentEnglish);
+        if (newEnglish === null) return; // 취소
+
+        // 2. 뜻 수정 입력
+        const newKorean = window.prompt("수정할 뜻을 입력하세요:", currentKorean);
+        if (newKorean === null) return; // 취소
+
+        if (!newEnglish.trim() || !newKorean.trim()) {
+            alert("단어와 뜻을 모두 입력해야 합니다.");
+            return;
+        }
+
+        try {
+            // 3. API 요청
+            await api.put(`/words/${wordId}`, { 
+                english: newEnglish.trim(), 
+                korean: newKorean.trim() 
+            });
+
+            // 4. 화면 업데이트
+            setWords(prevWords => prevWords.map(word => 
+                word.word_id === wordId 
+                    ? { ...word, english: newEnglish.trim(), korean: newKorean.trim() } 
+                    : word
+            ));
+            alert("단어가 수정되었습니다.");
+
+        } catch (error) {
+            console.error("단어 수정 실패:", error);
+            alert("단어 수정에 실패했습니다.");
+        }
     }
 
     const goToHome = () => navigate('/Chapter');
@@ -178,7 +209,7 @@ function Word() {
                                         <button
                                             className="CorrWordBtn"
                                             onClick={() => {
-                                                handleCorrWord(word.word_id, word.korean);
+                                                handleCorrWord(word.word_id, word.english, word.korean);
                                             }}
                                         >
                                             수정

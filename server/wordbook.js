@@ -203,4 +203,63 @@ router.delete('/chapters/:chapterId', async (req, res) => {
     }
 });
 
+// 챕터 이름 수정 (PUT /api/wordbook/chapters/:chapterId)
+router.put('/chapters/:chapterId', async (req, res) => {
+    const user_id = req.user_id;
+    const { chapterId } = req.params;
+    const { name } = req.body;
+
+    if (!name) {
+        return res.status(400).json({ message: '수정할 챕터 이름을 입력해주세요.' });
+    }
+
+    try {
+        // 1. 권한 확인
+        const [check] = await db.query('SELECT user_id FROM Chapters WHERE chapter_id = ?', [chapterId]);
+        if (check.length === 0) return res.status(404).json({ message: '챕터를 찾을 수 없습니다.' });
+        if (check[0].user_id !== user_id) return res.status(403).json({ message: '수정 권한이 없습니다.' });
+
+        // 2. 업데이트 실행
+        await db.query('UPDATE Chapters SET name = ? WHERE chapter_id = ?', [name, chapterId]);
+        
+        res.json({ message: '챕터 이름이 수정되었습니다.', newName: name });
+    } catch (error) {
+        if (error.code === 'ER_DUP_ENTRY') {
+            return res.status(409).json({ message: '이미 같은 이름의 챕터가 있습니다.' });
+        }
+        console.error('챕터 수정 에러:', error);
+        res.status(500).json({ message: '서버 오류가 발생했습니다.' });
+    }
+});
+
+// 단어 수정 (PUT /api/wordbook/words/:wordId)
+router.put('/words/:wordId', async (req, res) => {
+    const user_id = req.user_id;
+    const { wordId } = req.params;
+    const { english, korean } = req.body;
+
+    if (!english || !korean) {
+        return res.status(400).json({ message: '단어와 뜻을 모두 입력해주세요.' });
+    }
+
+    try {
+        // 1. 권한 확인 (단어 -> 챕터 -> 유저 확인)
+        const [check] = await db.query(
+            'SELECT C.user_id FROM Words W JOIN Chapters C ON W.chapter_id = C.chapter_id WHERE W.word_id = ?',
+            [wordId]
+        );
+
+        if (check.length === 0) return res.status(404).json({ message: '단어를 찾을 수 없습니다.' });
+        if (check[0].user_id !== user_id) return res.status(403).json({ message: '수정 권한이 없습니다.' });
+
+        // 2. 업데이트 실행
+        await db.query('UPDATE Words SET english = ?, korean = ? WHERE word_id = ?', [english, korean, wordId]);
+
+        res.json({ message: '단어가 수정되었습니다.', updatedWord: { english, korean } });
+    } catch (error) {
+        console.error('단어 수정 에러:', error);
+        res.status(500).json({ message: '서버 오류가 발생했습니다.' });
+    }
+});
+
 module.exports = router;

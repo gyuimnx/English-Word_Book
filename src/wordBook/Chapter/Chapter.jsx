@@ -59,6 +59,32 @@ function Chapter() {
         }
     }
 
+    async function UpdateChapter(chapterId, currentName) {
+        // 사용자에게 새로운 이름을 입력받음
+        const newName = window.prompt("새로운 챕터 이름을 입력하세요:", currentName);
+        
+        if (newName === null) return; // 취소 버튼 누름
+        if (!newName.trim()) {
+            alert("챕터 이름을 입력해야 합니다.");
+            return;
+        }
+        if (newName === currentName) return; // 변경 사항 없음
+
+        try {
+            // PUT 요청 보내기
+            await api.put(`/chapters/${chapterId}`, { name: newName.trim() });
+            
+            // 화면 목록 업데이트
+            setChapters(prev => prev.map(ch => 
+                ch.chapter_id === chapterId ? { ...ch, name: newName.trim() } : ch
+            ));
+            alert("챕터 이름이 수정되었습니다.");
+        } catch (error) {
+            const message = error.response?.data?.message || '챕터 수정 실패';
+            alert(message);
+        }
+    }
+
     const handleLogout = () => {
         localStorage.removeItem('userToken'); // 토큰 제거하고
         localStorage.removeItem('username');
@@ -105,7 +131,7 @@ function Chapter() {
             )}
 
             <div className="ChapterList">
-                <ListChapter chapters={chapters} DeleteChapter={DeleteChapter} />
+                <ListChapter chapters={chapters} DeleteChapter={DeleteChapter} UpdateChapter={UpdateChapter} />
             </div>
             <Link className="QuizLink" to={"/Quiz"}>
                 <div className="QuizPage">

@@ -2,13 +2,13 @@ import React from 'react';
 import './ListChapter.css';
 import { Link } from 'react-router-dom';
 
-function ListChapter({ chapters, DeleteChapter }) {
+function ListChapter({ chapters, DeleteChapter, UpdateChapter }) {
 
     const handleCorrChapter = async (e, chapterId, currentName) => {
         e.preventDefault(); //Link의 기본 동작을 막음
         e.stopPropagation(); //이벤트가 상위로 퍼지는거 방지
 
-        alert("구현예정")
+        UpdateChapter(chapterId, currentName);
     };
 
     return (
