@@ -1,4 +1,4 @@
-/* Word.css */
+/* Word.css
 .Wodr_container {
     margin: 0;
     display: flex;
@@ -44,7 +44,6 @@
     background-color: #FFD700;
 }
 
-/* 모달 스타일 */
 .WordModalOverlay {
     position: fixed;
     top: 40%;
@@ -68,10 +67,6 @@
 .WordModal {
     display: flex;
     flex-direction: column;
-    
-    /* position: absolute; */
-    /* top: 50%;
-    left: 50%; */
     position: fixed;
     top: 40%;
     left: 50%;
@@ -140,7 +135,6 @@
     background-color: #e0e0e0;
 }
 
-/* 단어 목록 스타일 */
 .WordList {
     margin-top: 20px;
 }
@@ -171,12 +165,6 @@
     transition: transform 0.2s;
     width: 600px;
 }
-
-
-/*올리면 쪼끔 움직임*/
-/* .WordItem:hover {
-    transform: translateY(-2px);
-} */
 
 
 .WordText {
@@ -260,25 +248,274 @@
 
 
 
-/* src/wordBook/Word/Word.css (스타일 정리) */
 
-/* 암기 완료된 단어 전체 스타일 - 유지 */
 .WordItem.memorized {
     background-color: #fff4c3;
-    /* border: 1px solid #28a745;
-    border-left: 3px solid #28a745; */
 }
 
-/* .ToggleBtn, .ToggleBtn.unmemorized, .ToggleBtn.memorized 
-관련 스타일은 모두 제거합니다.
-*/
-/* ✨ [추가] 체크박스 악센트 색상 정의 */
 .ToggleCheckbox {
     width: 20px;
     height: 20px;
     margin-right: 5px;
     cursor: pointer;
-    
-    /* ✨ [핵심 수정] 체크박스 배경색을 프로젝트 테마 색상으로 지정 */
+
     accent-color: #ffffff; 
+} */
+
+
+/* src/wordBook/Word/Word.css (전체 교체) */
+
+/* ---------------------------------------------------- */
+/* 1. 기본 설정 및 헤더 */
+/* ---------------------------------------------------- */
+.Wodr_container {
+    padding: 20px;
+    background-color: #f4f6f9; /* 배경색 통일 */
+    min-height: 100vh;
+}
+
+.Word {
+    max-width: 900px; 
+    margin: 0 auto;
+    padding: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center
+}
+
+.WordHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #ddd; 
+    width: 100%;
+}
+
+.WordHeader h1 {
+    color: #333;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0;
+    flex-grow: 1; 
+    text-align: center;
+}
+
+/* BackBtn, AddWordBtn 스타일은 Chapter.css와 통일 */
+/* ✨ [수정] BackBtn 스타일 확정 */
+.BackBtn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%; /* 원형 버튼 */
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 0;
+    transition: background-color 0.2s;
+}
+
+.BackBtn:hover {
+    background-color: #eee; /* 아주 연한 회색 호버 */
+}
+
+.BackImg {
+    width: 20px; /* 이미지 크기 조정 */
+    height: 20px;
+}
+
+.AddWordBtn {
+    background-color: #FAAE3D;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    color: white;
+    box-shadow: 0 4px 6px rgba(250, 174, 61, 0.3);
+    transition: all 0.2s ease-in-out;
+}
+
+/* ---------------------------------------------------- */
+/* 2. 모달 스타일 (재사용 가능한 디자인 적용) */
+/* ---------------------------------------------------- */
+.WordModalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.WordModal {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1001;
+}
+
+.WordModal h2 {
+    color: #333;
+    margin: 0 0 20px 0;
+    text-align: center;
+}
+
+.WordBar, .MeanBar {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-left: 0;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.WordBar:focus, .MeanBar:focus {
+    outline: none;
+    border-color: #FAAE3D;
+}
+
+.FormButtons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.SubmitBtn {
+    background-color: #FAAE3D;
+    color: white;
+    font-weight: 600;
+}
+
+.CancelBtn {
+    background-color: #f0f0f0;
+    color: #333;
+}
+/* ... (SubmitBtn, CancelBtn hover 스타일은 Chapter.css와 통일) ... */
+
+
+/* ---------------------------------------------------- */
+/* 3. 단어 목록 (Word Items) */
+/* ---------------------------------------------------- */
+.WordList {
+    margin-top: 20px;
+}
+
+.EmptyMessage {
+    text-align: center;
+    color: #999;
+    padding: 30px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.WordItems {
+    display: grid;
+    gap: 15px;
+}
+
+.WordItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease-in-out;
+    width: 800px;
+    box-sizing: border-box;
+}
+
+.WordItem:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* ---------------------------------------------------- */
+/* 4. 체크박스 및 단어 내용 */
+/* ---------------------------------------------------- */
+.checkWord {
+    gap: 30px; /* 체크박스와 영어 단어 사이 간격 */
+    display: flex;
+    align-items: center; 
+    flex-shrink: 0;
+}
+
+.ToggleCheckbox {
+    margin-right: 0;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #28a745; /* 녹색 */
+    flex-shrink: 0;
+}
+
+.WordText {
+    font-weight: 700;
+    color: #333;
+    font-size: 1.1em;
+    min-width: 55px; 
+}
+
+/* ✨ [핵심 수정] 뜻(의미) 가운데 정렬 */
+.WordMeaning {
+    color: #666;
+    font-size: 1em;
+    
+    flex-grow: 1; /* 남은 공간을 모두 차지하도록 설정 */
+    text-align: center; /* 확보된 공간 안에서 텍스트를 중앙 정렬 */
+}
+
+/* ---------------------------------------------------- */
+/* 5. 버튼 그룹 및 수정/삭제 버튼 */
+/* ---------------------------------------------------- */
+.WordBtns {
+    display: flex;
+    gap: 20px;
+    flex-shrink: 0;
+    margin-left: 20px;
+}
+
+.CorrWordBtn, .DeleteWordBtn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 0.9em;
+}
+
+.CorrWordBtn {
+    background-color: #17a2b8; 
+    color: white;
+}
+
+.DeleteWordBtn {
+    background-color: #dc3545; 
+    color: white;
+}
+
+/* 암기 상태 디자인 */
+.WordItem.memorized {
+    background-color: #f1fff4; 
+    border-left: 6px solid #28a745; 
+    box-shadow: 0 3px 10px rgba(40, 167, 69, 0.1);
 }

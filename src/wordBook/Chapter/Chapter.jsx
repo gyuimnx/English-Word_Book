@@ -68,21 +68,20 @@ function Chapter() {
     return (
         <div className="Chapter">
             <h1 className="Header">
+                <button
+                    className="LogoutBtn"
+                    onClick={handleLogout}
+                >
+                    로그아웃 ({username}님)
+                </button>
                 <div className="VOCA">VOCA</div>
-                <div>
-                    <button
-                        className="CreateBtn LogoutBtn"
-                        onClick={handleLogout}
-                    >
-                        로그아웃 ({username}님)
-                    </button>
-                    <button
-                        className="CreateBtn"
-                        onClick={() => setCreateOpen(true)}
-                    >
-                        New Chapter
-                    </button>
-                </div>
+                <button
+                    className="CreateBtn"
+                    onClick={() => setCreateOpen(true)}
+                >
+                    New Chapter
+                </button>
+
             </h1>
 
             {createOpen && (

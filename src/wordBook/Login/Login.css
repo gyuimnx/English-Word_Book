@@ -1,6 +1,4 @@
-/* src/wordBook/Login/Login.css */
-
-.auth-container {
+/* .auth-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -50,7 +48,7 @@
 }
 
 .auth-container button[type="submit"] {
-    background-color: #61dafb; /* React 기본 색상 */
+    background-color: #61dafb; 
     color: white;
     font-weight: bold;
 }
@@ -67,7 +65,7 @@
 
 .auth-container p button {
     background: none;
-    color: #007bff; /* 링크 색상 */
+    color: #007bff; 
     text-decoration: underline;
     padding: 0;
     font-size: 14px;
@@ -75,5 +73,89 @@
 }
 
 .auth-container p button:hover {
+    color: #0056b3;
+} */
+
+/* src/wordBook/Login/Login.css (전체 교체) */
+
+.auth-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f4f6f9; /* 배경색 통일 */
+    font-family: inherit;
+}
+
+.auth-container h2 {
+    color: #333;
+    margin-bottom: 25px;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.auth-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 40px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    width: 320px;
+}
+
+.auth-container input {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.auth-container input:focus {
+    border-color: #FAAE3D; /* 주 액센트 색상 */
+    outline: none;
+}
+
+.auth-container button {
+    padding: 12px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+.auth-container button[type="submit"] {
+    background-color: #FAAE3D; /* 로그인: 주 액센트 색상 */
+    color: white;
+    margin-top: 10px;
+}
+
+.auth-container button[type="submit"]:hover {
+    background-color: #F89F1D;
+}
+
+.auth-container p {
+    margin-top: 25px;
+    font-size: 14px;
+    color: #555;
+    text-align: center;
+}
+
+.auth-container p button {
+    background: none;
+    color: #007bff;
+    text-decoration: none;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.auth-container p button:hover {
+    text-decoration: underline;
     color: #0056b3;
 }

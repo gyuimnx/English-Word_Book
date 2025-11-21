@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
 
 .ChapterContainer {
     display: flex;
@@ -15,7 +15,6 @@
     align-self: flex-start;
 
     font-family: 'Roboto';
-    /* font-weight: bold; */
 }
 
 .ChapterItem {
@@ -23,8 +22,7 @@
     height: 110px;
 
     background-color: #FFC107;
-    /* background-color: white;
-    border: 3px solid #FFC107; */
+
 
     justify-content: space-evenly;
     align-items: center;
@@ -36,7 +34,7 @@
     font-weight: bold;
 
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /*약간 입체적으로 보이게*/
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
     cursor: pointer;
 
     text-decoration: none;
@@ -57,11 +55,7 @@
 }
 
 .Btns {
-    /* gap: 10px; */
     position: relative;
-    /* right: -65px;
-    bottom: -5px; */
-
     z-index: 2;
 }
 
@@ -102,7 +96,6 @@
     text-align: center;
     color: #666;
     padding: 30px;
-    /* background-color: #d6d6d6; */
     border-radius: 5px;
 
     width: 900px;
@@ -113,4 +106,116 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+} */
+
+
+
+/* src/wordBook/ListChapter/ListChapter.css (전체 교체) */
+
+/* ---------------------------------------------------- */
+/* 1. 리스트 및 제목 */
+/* ---------------------------------------------------- */
+.ListChapter {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+.ChapterSet{
+    /* ChapterList가 중앙에 배치되므로 제목은 왼쪽 정렬 */
+    align-self: flex-start; 
+    margin-left: 20px;
+    margin-bottom: 25px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
+}
+
+.ChapterContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center; /* 카드를 중앙에 배치 */
+    gap: 20px;
+    width: 100%;
+}
+
+/* ---------------------------------------------------- */
+/* 2. 챕터 항목 (카드) */
+/* ---------------------------------------------------- */
+.ChapterItem {
+    width: 220px;
+    height: 120px;
+    
+    background-color: #FAAE3D; /* 주 액센트 색상 */
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+
+    font-size: 22px;
+    font-weight: 700;
+    color: #333; /* 텍스트 색상 */
+
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.ChapterItem:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    background-color: #F89F1D;
+    transform: translateY(-2px);
+}
+
+.empty {
+    font-size: 24px;
+    font-weight: 500;
+    text-align: center;
+    color: #999;
+    padding: 30px;
+    width: 90%;
+}
+
+/* ---------------------------------------------------- */
+/* 3. 버튼 그룹 */
+/* ---------------------------------------------------- */
+.Btns {
+    display: flex;
+    gap: 10px;
+    position: relative;
+    z-index: 2;
+}
+
+.CorrBtn, .DeleteBtn{
+    padding: 6px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.CorrBtn {
+    background-color: #17a2b8; /* 청록색 (수정) */
+    color: white;
+}
+
+.CorrBtn:hover {
+    background-color: #138496;
+}
+
+.DeleteBtn {
+    background-color: #dc3545; /* 빨간색 (삭제) */
+    color: white;
+}
+
+.DeleteBtn:hover {
+    background-color: #c82333;
 }

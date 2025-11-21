@@ -75,7 +75,7 @@ function Quiz() {
             return;
         }
 
-        // ✨ [수정] 선택된 챕터의 단어를 DB에서 불러옵니다.
+        // 선택된 챕터의 단어를 DB에서 불러옴
         const wordsToQuiz = await fetchWordsForChapter(selectedChapter.chapter_id);
         
         if (wordsToQuiz.length === 0) {

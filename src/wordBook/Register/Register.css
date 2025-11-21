@@ -1,8 +1,4 @@
-/* src/wordBook/Register/Register.css */
-
-/* Login.css와 공통 스타일은 동일하게 유지하고, 버튼 색상만 변경하여 구분합니다. */
-
-.auth-container {
+/* .auth-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -38,8 +34,7 @@
 }
 
 .auth-container input:focus {
-    border-color: #28a745; /* Register 색상 */
-    outline: none;
+    border-color: #28a745; 
 }
 
 .auth-container button {
@@ -52,7 +47,7 @@
 }
 
 .auth-container button[type="submit"] {
-    background-color: #28a745; /* Register 버튼은 초록색 계열 */
+    background-color: #28a745; 
     color: white;
     font-weight: bold;
 }
@@ -69,7 +64,7 @@
 
 .auth-container p button {
     background: none;
-    color: #007bff; /* 링크 색상 */
+    color: #007bff; 
     text-decoration: underline;
     padding: 0;
     font-size: 14px;
@@ -77,5 +72,93 @@
 }
 
 .auth-container p button:hover {
+    color: #0056b3;
+} */
+
+
+/* src/wordBook/Register/Register.css (전체 교체) */
+
+/* Login.css와 스타일 통일 (배경색, 폰트, 카드 디자인) */
+/* Login.css의 코드를 복사하여 사용하고, Register에 맞는 색상만 변경합니다. */
+
+.auth-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f4f6f9;
+    font-family: inherit;
+}
+
+.auth-container h2 {
+    color: #333;
+    margin-bottom: 25px;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.auth-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 40px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    width: 320px;
+}
+
+.auth-container input {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.auth-container input:focus {
+    border-color: #28a745; /* Register: 녹색 계열 */
+    outline: none;
+}
+
+.auth-container button {
+    padding: 12px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+.auth-container button[type="submit"] {
+    background-color: #28a745; /* Register: 녹색 계열 */
+    color: white;
+    margin-top: 10px;
+}
+
+.auth-container button[type="submit"]:hover {
+    background-color: #1e7e34;
+}
+
+.auth-container p {
+    margin-top: 25px;
+    font-size: 14px;
+    color: #555;
+    text-align: center;
+}
+
+.auth-container p button {
+    background: none;
+    color: #007bff;
+    text-decoration: none;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.auth-container p button:hover {
+    text-decoration: underline;
     color: #0056b3;
 }

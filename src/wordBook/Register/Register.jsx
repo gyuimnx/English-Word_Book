@@ -18,7 +18,7 @@ function Register() {
             // 백엔드의 POST /api/auth/register API 호출
             const response = await axios.post(`${BASE_URL}/register`, { username, password });
             
-            alert(response.data.message + ' 이제 로그인해 주세요.');
+            alert(response.data.message + ' 로그인 페이지로 이동합니다.');
             navigate('/Login'); // 회원가입 성공 후 로그인 페이지로 이동
 
         } catch (error) {
