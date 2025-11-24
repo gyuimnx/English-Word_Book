@@ -27,7 +27,7 @@ router.post('/register', async (req, res) => {
 
     try {
         // 아이디 중복 확인
-        let [rows] = await db.query('SELECT username FROM Users WHERE username = ?', [username]);
+        let [rows] = await db.query('SELECT username FROM users WHERE username = ?', [username]);
         if (rows.length > 0) {
             return res.status(409).json({ message: '이미 존재하는 아이디입니다.' });
         }
@@ -37,7 +37,7 @@ router.post('/register', async (req, res) => {
         const password_hash = await bcrypt.hash(password, salt);
 
         // DB에 사용자 정보 저장
-        await db.query('INSERT INTO Users (username, password_hash) VALUES (?, ?)', [username, password_hash]);
+        await db.query('INSERT INTO users (username, password_hash) VALUES (?, ?)', [username, password_hash]);
         res.status(201).json({ message: '회원가입 성공!' });
 
     } catch (error) {
@@ -56,7 +56,7 @@ router.post('/login', async (req, res) => {
 
     try {
         // 1. 사용자 정보 조회
-        let [users] = await db.query('SELECT * FROM Users WHERE username = ?', [username]);
+        let [users] = await db.query('SELECT * FROM users WHERE username = ?', [username]);
         if (users.length === 0) {
             return res.status(401).json({ message: '아이디 또는 비밀번호가 올바르지 않습니다.' });
         }
@@ -77,7 +77,7 @@ router.post('/login', async (req, res) => {
 
         if (isMatch) {
             // 4. 로그인 성공: 시도 횟수 초기화 및 JWT 토큰 발급
-            await db.query('UPDATE Users SET login_attempts = 0, lock_until = NULL WHERE user_id = ?', [user.user_id]);
+            await db.query('UPDATE users SET login_attempts = 0, lock_until = NULL WHERE user_id = ?', [user.user_id]);
 
             const token = jwt.sign(
                 { user_id: user.user_id, username: user.username },
@@ -105,7 +105,7 @@ router.post('/login', async (req, res) => {
                 message = `비밀번호 ${MAX_LOGIN_ATTEMPTS}회 실패! 계정이 1분간 잠금됩니다.`;
             }
 
-            await db.query('UPDATE Users SET login_attempts = ?, lock_until = ? WHERE user_id = ?', [newAttempts, lockUntil, user.user_id]);
+            await db.query('UPDATE users SET login_attempts = ?, lock_until = ? WHERE user_id = ?', [newAttempts, lockUntil, user.user_id]);
             res.status(401).json({ message });
         }
 
