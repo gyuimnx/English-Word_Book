@@ -5,7 +5,8 @@ import './Login.css';
 
 // const BASE_URL = 'http://localhost:5000/api/auth'; // 백엔드 인증 라우트 기본 경로
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+// const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+const API_URL = process.env.REACT_APP_API_URL || 'https://port-0-english-word-book-micui602660e6a2b.sel3.cloudtype.app/Login';
 const BASE_URL = `${API_URL}/api/auth`;
 
 function Login() {
