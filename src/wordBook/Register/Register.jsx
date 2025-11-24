@@ -3,7 +3,10 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Register.css';
 
-const BASE_URL = 'http://localhost:5000/api/auth'; 
+// const BASE_URL = 'http://localhost:5000/api/auth'; 
+
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+const BASE_URL = `${API_URL}/api/auth`;
 
 function Register() {
     const [username, setUsername] = useState('');

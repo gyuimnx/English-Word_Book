@@ -1,8 +1,15 @@
 import axios from 'axios';
 
-// 백엔드 서버의 기본 URL(wordbook 라우트)
+// // 백엔드 서버의 기본 URL(wordbook 라우트)
+// const api = axios.create({
+//     baseURL: 'http://localhost:5000/api/wordbook', 
+// });
+
+// 환경 변수 REACT_APP_API_URL이 있으면 그걸 쓰고, 없으면 로컬 주소 사용
+const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const api = axios.create({
-    baseURL: 'http://localhost:5000/api/wordbook', 
+    baseURL: `${BASE_URL}/api/wordbook`, 
 });
 
 // 요청 인터셉터: 모든 요청에 JWT 토큰을 헤더에 추가

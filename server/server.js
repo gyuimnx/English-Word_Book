@@ -1,29 +1,26 @@
-require('dotenv').config(); //env 파일 로드
+require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
-const db = require('./db'); // DB 연결 모듈 불러오기
-
-const authRoutes = require('./routes_auth');        // 인증 라우터 불러오기
-const wordbookRoutes = require('./wordbook'); // 단어장 라우터 불러오기
+const db = require('./db'); 
+const authRoutes = require('./routes_auth');
+const wordbookRoutes = require('./wordbook');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// 미들웨어 설정
-// CORS 설정: React 개발 서버(http://localhost:3000)에서 요청 허용
+// 미들웨어
 const corsOptions = {
-    origin: 'http://localhost:3000', 
+    origin: [
+        'http://localhost:3000', // 로컬 개발용
+        process.env.CLIENT_URL   // 배포된 프론트엔드 주소(나중에 클라우드타입에서 설정)
+    ], 
     credentials: true,
 };
 app.use(cors(corsOptions));
 
-// JSON 형식의 요청 본문 파싱 설정
 app.use(express.json());
-// URL-encoded 본문 파싱 설정
 app.use(express.urlencoded({ extended: true }));
-
-// 기본 라우트
 app.get('/', (req, res) => {
     res.send('English Wordbook Server is running!');
 });
@@ -34,7 +31,6 @@ app.use('/api/auth', authRoutes);
 // 단어장 라우터 연결 (JWT 토큰 필요)
 app.use('/api/wordbook', wordbookRoutes);
 
-// 서버 시작 및 DB 연결 테스트
 db.getConnection()
     .then(connection => {
         console.log('MySQL 연결 완료'); // 성공하면 이 메시지 나옴
