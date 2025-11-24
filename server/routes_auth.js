@@ -9,10 +9,11 @@ const moment = require('moment'); // 시간 처리
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const MAX_LOGIN_ATTEMPTS = 5;
+const LOCK_TIME_SECONDS = 60;
 
 // 잠금 시간 60초로 설정
-const LOCK_TIME_UNIT = 'seconds'; 
-const LOCK_TIME_VALUE = 60; 
+const LOCK_TIME_UNIT = 'seconds';
+const LOCK_TIME_VALUE = 60;
 
 // 메시지에 표시할 단위
 const LOCK_UNIT_DISPLAY = LOCK_TIME_UNIT === 'minutes' ? '분' : '초';
@@ -28,7 +29,7 @@ router.post('/register', async (req, res) => {
         // 아이디 중복 확인
         let [rows] = await db.query('SELECT username FROM Users WHERE username = ?', [username]);
         if (rows.length > 0) {
-            return res.status(409).json({ message: '이미 존재하는 아이디입니다.' }); 
+            return res.status(409).json({ message: '이미 존재하는 아이디입니다.' });
         }
 
         // 비밀번호 해싱 (보안 필수)
@@ -70,24 +71,24 @@ router.post('/login', async (req, res) => {
             // 잠금 상태 메시지
             return res.status(403).json({ message: `로그인 실패 ${MAX_LOGIN_ATTEMPTS}회로 인해 계정이 잠금되었습니다. ${remainingSeconds + 1}초 후 다시 시도해주세요.` });
         }
-        
+
         // 3. 비밀번호 해싱 값 비교
         const isMatch = await bcrypt.compare(password, user.password_hash);
-        
+
         if (isMatch) {
             // 4. 로그인 성공: 시도 횟수 초기화 및 JWT 토큰 발급
             await db.query('UPDATE Users SET login_attempts = 0, lock_until = NULL WHERE user_id = ?', [user.user_id]);
-            
+
             const token = jwt.sign(
-                { user_id: user.user_id, username: user.username }, 
-                JWT_SECRET, 
-                { expiresIn: '1d' } 
+                { user_id: user.user_id, username: user.username },
+                JWT_SECRET,
+                { expiresIn: '1d' }
             );
 
-            res.json({ 
-                message: '로그인 성공! 환영합니다.', 
-                token, 
-                user: { id: user.user_id, username: user.username } 
+            res.json({
+                message: '로그인 성공! 환영합니다.',
+                token,
+                user: { id: user.user_id, username: user.username }
             });
 
         } else {
@@ -95,17 +96,13 @@ router.post('/login', async (req, res) => {
             let newAttempts = user.login_attempts + 1;
             let lockUntil = null;
             let message = '아이디 또는 비밀번호가 올바르지 않습니다.';
-            
+
             if (newAttempts >= MAX_LOGIN_ATTEMPTS) {
-                // 수정된 잠금 시간 변수를 사용하여 잠금 시간 설정
-                lockUntil = moment().add(LOCK_TIME_VALUE, LOCK_TIME_UNIT).format('YYYY-MM-DD HH:mm:ss');
-                newAttempts = MAX_LOGIN_ATTEMPTS; 
-                
-                // 잠금 메시지
-                message = `비밀번호 ${MAX_LOGIN_ATTEMPTS}회 실패! 계정이 ${LOCK_TIME_VALUE}${LOCK_UNIT_DISPLAY} 동안 잠금됩니다.`;
-            } else {
-                const remaining = MAX_LOGIN_ATTEMPTS - newAttempts;
-                message += ` (실패 ${newAttempts}/${MAX_LOGIN_ATTEMPTS}회. ${remaining}회 더 실패하면 잠금됩니다.)`;
+                // 간단하게 수정
+                lockUntil = moment().add(LOCK_TIME_SECONDS, 'seconds').format('YYYY-MM-DD HH:mm:ss');
+                newAttempts = MAX_LOGIN_ATTEMPTS;
+
+                message = `비밀번호 ${MAX_LOGIN_ATTEMPTS}회 실패! 계정이 1분간 잠금됩니다.`;
             }
 
             await db.query('UPDATE Users SET login_attempts = ?, lock_until = ? WHERE user_id = ?', [newAttempts, lockUntil, user.user_id]);
