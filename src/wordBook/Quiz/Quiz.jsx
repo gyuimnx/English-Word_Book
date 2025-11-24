@@ -8,17 +8,15 @@ function Quiz() {
     const [bringChapters, setBringChapters] = useState([]); 
     const [selectedChapter, setSelectedChapter] = useState(null); // 선택된 챕터
 
-    // 퀴즈 진행 관련 상태
-    const [wordsInChapter, setWordsInChapter] = useState([]); // 퀴즈 단어 목록
+    // 퀴즈 진행 관련
+    const [wordsInChapter, setWordsInChapter] = useState([]);
     const [quizMode, setQuizMode] = useState('random'); // 퀴즈 모드
-    const [quizIndex, setQuizIndex] = useState(0); // 현재 문제 인덱스
+    const [quizIndex, setQuizIndex] = useState(0); // 현재 문제
     const [userAnswer, setUserAnswer] = useState(''); // 입력한 답
     const [isChecking, setIsChecking] = useState(false); // 정답 확인 중 여부
     const [quizResults, setQuizResults] = useState([]); // 퀴즈 결과 기록
     const [isQuizDone, setIsQuizDone] = useState(false); // 퀴즈 종료 여부
     const [openChapter, setOpenChapter] = useState(false); // 챕터 선택 모달
-
-    const [quizEnd, setQuizEnd] = useState(false); // 퀴즈 종료됐는가
 
     const fetchChapters = async () => {
         try {
@@ -109,11 +107,6 @@ function Quiz() {
         }
     };
 
-    //챕터 선택
-    const handleChapterSelect = (chapter) => {
-        setSelectedChapter(chapter);
-    };
-
     const handleGoHome = () => {
         setSelectedChapter(null);
         setWordsInChapter([]);
@@ -125,14 +118,15 @@ function Quiz() {
         setOpenChapter(false);
     };
 
+    // 엔터키로 가능하도록
     const handleInputKeyDown = (e) => {
         if (e.key === 'Enter') {
-            e.preventDefault(); // 폼 제출 등 기본 동작 방지
+            e.preventDefault();
             if (isChecking) {
-                // 정답 확인 상태 -> 다음 단어
+                // 정답 확인 상태이면 -> 다음 단어
                 handleNextWord();
             } else {
-                // 입력 중이 -> 정답 확인
+                // 입력 중이면 -> 정답 확인
                 handleCheckAnswer();
             }
         }
