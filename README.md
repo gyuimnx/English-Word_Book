@@ -46,9 +46,12 @@ PORT=5000
 JWT_SECRET=your_secret_key_12345
 
 ### 2. 의존성 설치 및 실행
-터미널에서 아래 명령어를 순서대로 실행하여 서비스를 구동합니다.
 # [Terminal 1] 의존성 설치 및 백엔드 실행
-npm install && cd server && npm install && node server.js
-
-# [Terminal 2] 프론트엔드 실행(루트 디렉토리에서)
-npm start
+```bash
+npm install
+cd server
+npm install
+node server.js
+# [Terminal 2] 프론트엔드 실행 (루트 디렉토리에서)
+```bash
+npm star
