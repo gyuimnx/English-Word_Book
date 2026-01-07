@@ -1,70 +1,52 @@
-# Getting Started with Create React App
+# 개인화 영어 단어 학습 서비스 (Personalized English Wordbook)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+사용자 맞춤형 학습을 지원하는 웹 기반 영어 단어장 서비스입니다. React, Node.js, MySQL을 활용하여 구축되었으며, 사용자의 암기 상태에 따른 스마트 퀴즈 기능을 제공합니다.
 
-## Available Scripts
+## 🔗 서비스 이용 방법 (Live Demo)
+본 서비스는 별도의 설치 없이 아래 배포 링크를 통해 즉시 확인 및 이용이 가능합니다.
+- **배포 주소**: [https://english-word-book.vercel.app/](https://english-word-book.vercel.app/Login)
+- **알림**: 프론트엔드는 Vercel, 백엔드 및 DB는 Cloudtype을 통해 운영 중입니다.
 
-In the project directory, you can run:
+## 주요 기능
 
-### `npm start`
+### 1. 사용자 인증 및 보안
+- **JWT 기반 인증**: 로그인 시 발급되는 토큰으로 사용자 세션을 안전하게 관리합니다.
+- **계정 보호 시스템**: 보안 강화를 위해 5회 이상 로그인 실패 시 1분간 계정이 자동 잠금됩니다.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 2. 단어 및 챕터 관리 (CRUD)
+- **챕터 관리**: 학습 주제별로 챕터를 자유롭게 생성, 수정, 삭제할 수 있습니다.
+- **단어 관리**: 각 챕터 내에서 단어와 뜻을 관리하며, 체크박스를 통해 암기 여부를 실시간으로 업데이트합니다.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 3. 스마트 퀴즈 시스템 (개선된 로직)
+- **학습 최적화**: 미암기 단어만 필터링하여 효율적인 복습이 가능합니다.
+- **유연한 정답 판정**: 
+  - **다중 정답 허용**: 쉼표(,)나 세미콜론(;)으로 구분된 여러 뜻 중 하나만 맞아도 정답 처리.
+  - **부연 설명 무시**: 뜻에 포함된 괄호 내용(예: (필요 등을) 만족시키다)은 제외하고 핵심어만 입력해도 정답 인정.
+  - **사용자 편의**: 대소문자 및 양끝 공백을 무시하며, 엔터키로 빠른 정답 확인 및 다음 문제 이동을 지원합니다.
 
-### `npm test`
+## 🛠 기술 스택
+- **Frontend**: React.js, Axios, React Router
+- **Backend**: Node.js, Express
+- **Database**: MySQL
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 로컬 실행 방법 (Integrated Setup)
 
-### `npm run build`
+### 1. 환경 변수 설정 (필수)
+서버를 실행하기 전, `server` 폴더 내에 `.env` 파일을 생성하고 아래 내용을 복사하여 붙여넣으세요.
+```env
+# 데이터베이스 연결 정보 (본인의 MySQL 설정에 맞게 수정)
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_password
+DB_DATABASE=eng_word_book_db
+DB_PORT=3306
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# 서버 실행 포트 및 보안 설정
+PORT=5000
+JWT_SECRET=your_secret_key_12345
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# [Terminal 1] 의존성 설치 및 백엔드 실행
+npm install && cd server && npm install && node server.js
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# [Terminal 2] 프론트엔드 실행 (루트 디렉토리에서)
+npm start
