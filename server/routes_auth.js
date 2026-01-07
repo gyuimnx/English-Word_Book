@@ -55,7 +55,7 @@ router.post('/login', async (req, res) => {
     }
 
     try {
-        // 1. 사용자 정보 조회
+        // 사용자 정보 조회
         let [users] = await db.query('SELECT * FROM users WHERE username = ?', [username]);
         if (users.length === 0) {
             return res.status(401).json({ message: '아이디 또는 비밀번호가 올바르지 않습니다.' });
@@ -64,7 +64,7 @@ router.post('/login', async (req, res) => {
         const user = users[0];
         const now = moment();
 
-        // 2. 계정 잠금 상태 확인
+        // 계정 잠금 상태 확인
         if (user.lock_until && moment(user.lock_until).isAfter(now)) {
             const lockTime = moment(user.lock_until);
             const remainingSeconds = lockTime.diff(now, 'seconds');
@@ -72,11 +72,11 @@ router.post('/login', async (req, res) => {
             return res.status(403).json({ message: `로그인 실패 ${MAX_LOGIN_ATTEMPTS}회로 인해 계정이 잠금되었습니다. ${remainingSeconds + 1}초 후 다시 시도해주세요.` });
         }
 
-        // 3. 비밀번호 해싱 값 비교
+        // 비밀번호 해싱 값 비교
         const isMatch = await bcrypt.compare(password, user.password_hash);
 
         if (isMatch) {
-            // 4. 로그인 성공: 시도 횟수 초기화 및 JWT 토큰 발급
+            // 로그인 성공: 시도 횟수 초기화 및 JWT 토큰 발급
             await db.query('UPDATE users SET login_attempts = 0, lock_until = NULL WHERE user_id = ?', [user.user_id]);
 
             const token = jwt.sign(
@@ -92,7 +92,7 @@ router.post('/login', async (req, res) => {
             });
 
         } else {
-            // 5. 로그인 실패: 시도 횟수 증가 및 잠금 로직 실행
+            // 로그인 실패: 시도 횟수 증가 및 잠금 로직 실행
             let newAttempts = user.login_attempts + 1;
             let lockUntil = null;
             let message = '아이디 또는 비밀번호가 올바르지 않습니다.';
