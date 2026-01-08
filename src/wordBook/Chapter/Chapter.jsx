@@ -3,6 +3,7 @@ import './Chapter.css';
 import ListChapter from "../ListChapter/ListChapter";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../api";
+import Papa from "papaparse";
 
 function Chapter() {
     const [chapters, setChapters] = useState([]); // 챕터 목록
@@ -114,6 +115,41 @@ function Chapter() {
         navigate('/Login'); // 로그인 페이지로 이동
     };
 
+    const handleCsvUpload = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        // 파일명을 챕터 이름으로 설정(확장자 제거)
+        const chapterName = file.name.replace(/\.[^/.]+$/, "");
+
+        Papa.parse(file, {
+            header: true, // 첫 줄을 english, korean 키로 사용
+            skipEmptyLines: true,
+            complete: async (results) => {
+                const words = results.data;
+
+                // 데이터 형식 검증
+                if (words.length === 0 || !words[0].english || !words[0].korean) {
+                    alert("CSV 형식이 올바르지 않습니다.(헤더명 english, korean 필수)");
+                    return;
+                }
+
+                try {
+                    // 백엔드에 챕터명과 단어 배열 전송
+                    await api.post('/chapters/import', {
+                        name: chapterName,
+                        words: words
+                    });
+                    alert(`'${chapterName}' 챕터 등록 완료`);
+                    fetchChapters();
+                } catch (error) {
+                    console.error('CSV 임포트 실패', error);
+                    alert('서버 저장 중 오류가 발생했습니다.');
+                }
+            }
+        });
+    };
+
     return (
         <div className="Chapter">
             <h1 className="Header">
@@ -124,14 +160,25 @@ function Chapter() {
                     로그아웃 ({username})
                 </button>
                 <div className="VOCA">VOCA</div>
-                <button
-                    className="CreateBtn"
-                    onClick={() => setCreateOpen(true)}
-                    title="단축키: C"
-                >
-                    New Chapter
-                </button>
-
+                <div className="HeaderButtons">
+                    <label htmlFor="csv-upload" className="CsvUploadBtn">
+                        CSV Import
+                    </label>
+                    <input
+                        id="csv-upload"
+                        type="file"
+                        accept=".csv"
+                        onChange={handleCsvUpload}
+                        style={{ display: 'none' }}
+                    />
+                    <button
+                        className="CreateBtn"
+                        onClick={() => setCreateOpen(true)}
+                        title="단축키: C"
+                    >
+                        New Chapter
+                    </button>
+                </div>
             </h1>
 
             {createOpen && (

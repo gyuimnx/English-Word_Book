@@ -209,3 +209,24 @@ input[type=text]:focus {
 .QuizBtn:hover {
     background-color: #0056b3;
 }
+
+.HeaderButtons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.CsvUploadBtn {
+    background-color: #28a745;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.CsvUploadBtn:hover {
+    background-color: #218838;
+}

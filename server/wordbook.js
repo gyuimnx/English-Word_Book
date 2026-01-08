@@ -262,4 +262,27 @@ router.put('/words/:wordId', async (req, res) => {
     }
 });
 
+router.post('/chapters/import', protect, async (req, res) => {
+    const { name, words } = req.body;
+    const userId = req.user_id;
+
+    try {
+        const [chapterResult] = await db.execute(
+            'INSERT INTO Chapters (user_id, name) VALUES (?, ?)',
+            [userId, name]
+        );
+        const chapterId = chapterResult.insertId;
+
+        const values = words.map(w => [chapterId, w.english, w.korean]);
+        await db.query(
+            'INSERT INTO Words (chapter_id, english, korean) VALUES ?',
+            [values]
+        );
+
+        res.status(201).json({ message: 'Success' });
+    } catch (error) {
+        res.status(500).json({ error: 'Server Error' });
+    }
+});
+
 module.exports = router;
