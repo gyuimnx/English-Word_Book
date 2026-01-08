@@ -77,26 +77,31 @@ function Quiz() {
         setOpenChapter(false);
     };
 
-    //정답 확인
-    const handleCheckAnswer = () => {
+    // 정답 확인
+const handleCheckAnswer = () => {
         if (isChecking || userAnswer.trim() === '') return;
 
         const currentWord = wordsInChapter[quizIndex];
         
-        //사용자 입력값 전처리(공백 제거, 소문자화)
-        const input = userAnswer.trim().toLowerCase();
+        // 사용자 입력값 전처리: 모든 공백 제거 및 소문자화
+        const processedInput = userAnswer.replace(/\s+/g, '').toLowerCase();
 
-        //DB 정답 데이터 전처리
-        //쉼표나 세미콜론으로 구분된 여러 뜻을 배열로 분리
-        //정규표현식을 사용하여 괄호 ()와 그 안의 내용 삭제
-        //각 뜻의 앞뒤 공백 제거 및 소문자화
+        // 정답 전처리
+        // 쉼표나 세미콜론으로 구분된 여러 뜻을 배열로 분리
+        // 괄호와 그 안의 내용 삭제
+        // 각 뜻에서 모든 공백 제거 및 소문자화
         const correctAnswers = currentWord.korean
             .split(/[,,;]/) 
-            .map(answer => answer.replace(/\([^)]*\)/g, "").trim().toLowerCase())
+            .map(answer => 
+                answer
+                    .replace(/\([^)]*\)/g, "") // 괄호 및 내용 제거
+                    .replace(/\s+/g, "")       // 문자열 내 모든 공백 제거
+                    .toLowerCase()             // 소문자
+            )
             .filter(answer => answer.length > 0); //빈 문자열 제거
 
-        //분리된 뜻 중 하나라도 입력값과 일치하는지 확인
-        const isCorrect = correctAnswers.some(answer => answer === input);
+        // 정답 판정: 처리된 정답 후보 중 하나라도 입력값과 일치하는지 확인
+        const isCorrect = correctAnswers.some(answer => answer === processedInput);
 
         setQuizResults(prev => [...prev, {
             wordId: currentWord.word_id,
